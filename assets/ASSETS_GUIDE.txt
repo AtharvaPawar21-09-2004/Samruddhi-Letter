@@ -1,0 +1,37 @@
+<!-- 
+    ASSETS GUIDE
+    
+    This folder contains media assets for "A Letter for Samruddhi" website.
+    
+    STRUCTURE:
+    ├── song.mp3           - Background music for the letter (add your own)
+    └── flowers/           - Directory for optional flower images
+    
+    AUDIO FILES:
+    - song.mp3: MP3 audio file for background music
+      • Required if you want music to play
+      • Recommended size: < 10MB for faster loading
+      • Supported formats: MP3, WAV, OGG, FLAC
+    
+    FLOWER IMAGES (Optional):
+    The website uses emoji flowers (🌸) by default, which don't require files.
+    But you can add custom image files here if desired.
+    
+    INSTALLATION:
+    1. Add your audio file to this folder
+    2. Name it "song.mp3"
+    3. Reload the website - music will work automatically!
+    
+    RECOMMENDED MUSIC SOURCES:
+    - Pixabay Music: https://pixabay.com/music
+    - FreePM: https://freepm.net
+    - Bensound: https://bensound.com
+    - YouTube Audio Library (if you have a channel)
+    
+    FILE NAMING:
+    - Keep names simple and lowercase
+    - Use underscores instead of spaces
+    - Example: soft_piano_music.mp3
+    
+    For issues or questions, see README.md
+-->

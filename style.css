@@ -1,0 +1,2059 @@
+:root {
+    --cream: #fffaf4;
+    --paper: #fffdf9;
+    --blush: #f7d7dc;
+    --blush-deep: #d99aaa;
+    --rose: #9f6470;
+    --sage: #87977f;
+    --ink: #332d2d;
+    --muted: #786e69;
+    --line: rgba(159, 100, 112, 0.18);
+    --shadow: 0 22px 70px rgba(78, 55, 50, 0.12);
+    --font-display: "Playfair Display", Georgia, serif;
+    --font-letter: "Cormorant Garamond", Georgia, serif;
+    --font-body: "Inter", Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: var(--ink);
+    background:
+        radial-gradient(circle at 18% 6%, rgba(247, 215, 220, 0.72), transparent 19rem),
+        radial-gradient(circle at 86% 12%, rgba(229, 236, 216, 0.72), transparent 18rem),
+        linear-gradient(180deg, #fff8f1 0%, #fbebe8 46%, #fffaf4 100%);
+    font-family: var(--font-body);
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+::selection {
+    background: rgba(247, 215, 220, 0.9);
+}
+
+.flower-progress {
+    position: fixed;
+    top: 0.65rem;
+    left: 50%;
+    z-index: 100;
+    display: flex;
+    width: min(15.5rem, calc(100vw - 1.4rem));
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.34rem 0.48rem;
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    border-radius: 999px;
+    background: rgba(255, 253, 249, 0.66);
+    box-shadow: 0 0.75rem 2rem rgba(78, 55, 50, 0.08);
+    backdrop-filter: blur(16px);
+    transform: translateX(-50%);
+}
+
+.growth-stage {
+    display: grid;
+    width: 1.45rem;
+    height: 1.45rem;
+    place-items: center;
+    opacity: 0.34;
+    filter: grayscale(0.25);
+    font-size: 0.9rem;
+    transition: opacity 500ms ease, transform 500ms ease, filter 500ms ease;
+}
+
+.growth-stage.is-active {
+    opacity: 1;
+    filter: grayscale(0);
+    transform: scale(1.08);
+}
+
+.growth-line {
+    position: relative;
+    flex: 1;
+    height: 2px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(159, 100, 112, 0.14);
+}
+
+.growth-line span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--sage), var(--rose));
+}
+
+.petal-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.hero-section {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    min-height: 100svh;
+    place-items: center;
+    padding: 2rem 1.1rem;
+    overflow: hidden;
+    transition: opacity 900ms ease, transform 900ms ease, visibility 900ms ease;
+}
+
+.hero-section.is-leaving {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-1rem);
+}
+
+.hero-content {
+    position: relative;
+    width: min(100%, 38rem);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.56);
+    border-radius: 8px;
+    padding: clamp(2.2rem, 8vw, 4.7rem) clamp(1.25rem, 5vw, 3.4rem);
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.74), rgba(255, 250, 244, 0.44)),
+        rgba(255, 255, 255, 0.5);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(20px) saturate(1.08);
+    text-align: center;
+}
+
+.hero-content::after {
+    content: "";
+    position: absolute;
+    right: -8rem;
+    bottom: -9rem;
+    width: 18rem;
+    height: 18rem;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(247, 215, 220, 0.28), transparent 68%);
+    pointer-events: none;
+}
+
+.hero-flower {
+    position: relative;
+    z-index: 1;
+    width: clamp(6.2rem, 33vw, 9rem);
+    margin-bottom: 1.1rem;
+    opacity: 0.92;
+    filter: drop-shadow(0 1.2rem 1.6rem rgba(91, 66, 58, 0.12));
+    animation: lilyFloat 9s ease-in-out infinite;
+}
+
+.letter-kicker,
+.music-caption,
+.letter-footer {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.hero-title {
+    position: relative;
+    z-index: 1;
+    margin: 0 auto 0.8rem;
+    color: #2f2928;
+    font-family: var(--font-display);
+    font-size: clamp(3.7rem, 17vw, 6.8rem);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: 0;
+}
+
+.hero-title span {
+    display: inline-block;
+    font-size: 0.42em;
+    vertical-align: 0.18em;
+}
+
+.hero-subtitle {
+    position: relative;
+    z-index: 1;
+    max-width: 27rem;
+    margin: 0 auto 2rem;
+    color: var(--muted);
+    font-size: clamp(1rem, 4vw, 1.12rem);
+    line-height: 1.7;
+}
+
+.cta-button {
+    position: relative;
+    z-index: 1;
+    min-height: 3.2rem;
+    overflow: hidden;
+    border: 1px solid rgba(75, 49, 48, 0.16);
+    border-radius: 999px;
+    padding: 0.9rem 1.45rem;
+    color: #fffaf4;
+    background: linear-gradient(135deg, #3a3030, #85636b);
+    box-shadow: 0 0.9rem 2rem rgba(74, 49, 49, 0.16), 0 0 0 rgba(217, 154, 170, 0);
+    transition: transform 240ms ease, box-shadow 240ms ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 1.1rem 2.3rem rgba(74, 49, 49, 0.2), 0 0 2.2rem rgba(217, 154, 170, 0.24);
+}
+
+.button-text {
+    position: relative;
+    z-index: 1;
+    font-weight: 600;
+}
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.46);
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple 720ms ease-out forwards;
+}
+
+.opening-bloom {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: grid;
+    place-items: center;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(255, 250, 244, 0.82), transparent 58%);
+}
+
+.opening-bloom.is-active {
+    visibility: visible;
+    animation: bloomOverlay 2200ms ease forwards;
+}
+
+.bloom-flower,
+.signature-bloom {
+    position: relative;
+    aspect-ratio: 1;
+}
+
+.bloom-flower {
+    width: clamp(8.5rem, 36vw, 13rem);
+    filter: drop-shadow(0 1rem 2rem rgba(159, 100, 112, 0.16));
+}
+
+.bloom-flower span,
+.signature-bloom span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 31%;
+    height: 55%;
+    border-radius: 70% 30% 70% 30%;
+    background: linear-gradient(160deg, #fff, #faece8 58%, #e7b6c0);
+    opacity: 0;
+    transform-origin: 50% 94%;
+}
+
+.opening-bloom.is-active .bloom-flower span {
+    animation: openingPetal 1650ms cubic-bezier(0.2, 0.82, 0.22, 1) forwards;
+}
+
+.letter-section {
+    position: relative;
+    z-index: 6;
+    display: none;
+    min-height: 100svh;
+    padding: 1.2rem 0.85rem 2.5rem;
+}
+
+body.final-chapter .letter-card {
+    box-shadow: var(--shadow), 0 0 0 1px rgba(217, 154, 170, 0.08), 0 2rem 5rem rgba(159, 100, 112, 0.08);
+}
+
+body.final-chapter #finalChapterParagraph {
+    color: #2f2928;
+    transition: color 1200ms ease;
+}
+
+.letter-section.is-visible {
+    display: block;
+    animation: letterEnter 900ms ease both;
+}
+
+.letter-wrapper {
+    position: relative;
+    width: min(100%, 48rem);
+    margin: 0 auto;
+}
+
+.close-button {
+    position: sticky;
+    top: 0.85rem;
+    z-index: 20;
+    display: grid;
+    width: 2.55rem;
+    height: 2.55rem;
+    margin-left: auto;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--rose);
+    background: rgba(255, 253, 249, 0.78);
+    box-shadow: 0 0.6rem 1.6rem rgba(78, 55, 50, 0.09);
+    backdrop-filter: blur(14px);
+}
+
+.close-button svg {
+    width: 1.15rem;
+    height: 1.15rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.8;
+}
+
+.letter-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(159, 100, 112, 0.15);
+    border-radius: 8px;
+    padding: clamp(2.1rem, 7vw, 4.8rem) clamp(1.25rem, 5vw, 4.2rem);
+    background:
+        radial-gradient(circle at 20% 16%, rgba(255, 255, 255, 0.88) 0 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255, 253, 249, 0.96), rgba(255, 250, 244, 0.9)),
+        var(--paper);
+    background-size: 18px 18px, auto, auto;
+    box-shadow: var(--shadow);
+}
+
+.letter-card::before {
+    content: "";
+    position: absolute;
+    inset: 0.7rem;
+    border: 1px solid rgba(159, 100, 112, 0.12);
+    border-radius: 6px;
+    pointer-events: none;
+}
+
+.letter-watermark {
+    position: absolute;
+    right: -4.2rem;
+    top: 10rem;
+    width: clamp(15rem, 48vw, 25rem);
+    aspect-ratio: 1;
+    background: url("assets/flowers/Lily.png") center / contain no-repeat;
+    opacity: 0.02;
+    pointer-events: none;
+    transform: rotate(12deg);
+}
+
+.flower-corner,
+.letter-corner {
+    position: absolute;
+    width: 5.4rem;
+    aspect-ratio: 1;
+    background: url("assets/flowers/Lily.png") center / contain no-repeat;
+    opacity: 0.14;
+    pointer-events: none;
+    will-change: transform;
+}
+
+.flower-corner-left {
+    left: -2.4rem;
+    top: -1.5rem;
+    transform: rotate(-18deg);
+}
+
+.flower-corner-right {
+    right: -2.7rem;
+    bottom: -1.8rem;
+    transform: rotate(18deg);
+}
+
+.letter-corner {
+    width: clamp(4.5rem, 18vw, 7rem);
+    opacity: 0.075;
+}
+
+.letter-corner-top {
+    left: -2rem;
+    top: -1.8rem;
+    transform: rotate(-20deg);
+}
+
+.letter-corner-bottom {
+    right: -2.4rem;
+    bottom: -2.2rem;
+    transform: rotate(18deg);
+}
+
+.letter-header,
+.letter-body,
+.music-section {
+    position: relative;
+    z-index: 1;
+}
+
+.letter-header {
+    margin-bottom: 2.2rem;
+    text-align: center;
+}
+
+.letter-kicker {
+    margin-bottom: 0.7rem;
+}
+
+.letter-title {
+    color: #352c2b;
+    font-family: var(--font-letter);
+    font-size: clamp(2.4rem, 10vw, 4.1rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0;
+}
+
+.letter-body {
+    max-width: 39rem;
+    margin: 0 auto;
+}
+
+.letter-paragraph,
+.letter-closing {
+    color: #3a3331;
+    font-family: var(--font-letter);
+    font-size: clamp(1.18rem, 4.5vw, 1.36rem);
+    font-weight: 500;
+    line-height: 1.85;
+    letter-spacing: 0;
+}
+
+.letter-paragraph {
+    margin-bottom: 1.25rem;
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(0.9rem);
+    transition: opacity 900ms ease, transform 900ms ease;
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.signature-row {
+    position: relative;
+    display: flex;
+    min-height: 7.5rem;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-top: 1.4rem;
+}
+
+.letter-closing {
+    color: var(--rose);
+    font-size: clamp(1.65rem, 7vw, 2.35rem);
+    line-height: 1.1;
+}
+
+.signature-bloom {
+    width: clamp(4.8rem, 18vw, 6.8rem);
+    opacity: 0;
+    filter: drop-shadow(0 0.8rem 1.2rem rgba(159, 100, 112, 0.14));
+}
+
+.signature-bloom span {
+    width: 28%;
+    height: 52%;
+}
+
+.signature-row.bloomed .signature-bloom {
+    opacity: 1;
+    filter: drop-shadow(0 0.8rem 1.2rem rgba(159, 100, 112, 0.14)) drop-shadow(0 0 1.3rem rgba(255, 244, 238, 0.9));
+}
+
+.signature-row.bloomed .signature-bloom span {
+    animation: signaturePetal 1900ms cubic-bezier(0.2, 0.84, 0.2, 1) forwards;
+}
+
+.signature-bloom i {
+    position: absolute;
+    left: 54%;
+    top: 46%;
+    width: 0.36rem;
+    height: 0.64rem;
+    border-radius: 70% 30% 70% 30%;
+    background: rgba(255, 255, 255, 0.9);
+    opacity: 0;
+}
+
+.signature-row.bloomed .signature-bloom i {
+    animation: driftAway 3300ms ease-out forwards;
+    animation-delay: 1500ms;
+}
+
+.signature-bloom i:nth-of-type(2) {
+    animation-delay: 1740ms;
+}
+
+.signature-bloom i:nth-of-type(3) {
+    animation-delay: 1980ms;
+}
+
+.music-section {
+    max-width: 39rem;
+    margin: clamp(2.5rem, 7vw, 4rem) auto 0;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line);
+}
+
+.lily-meaning {
+    margin-bottom: 1.7rem;
+    border: 1px solid rgba(159, 100, 112, 0.13);
+    border-radius: 8px;
+    padding: 1.1rem;
+    background: rgba(255, 255, 255, 0.34);
+}
+
+.lily-meaning h3 {
+    margin-bottom: 0.6rem;
+    color: var(--rose);
+    font-family: var(--font-letter);
+    font-size: clamp(1.45rem, 6vw, 1.8rem);
+    font-weight: 600;
+    line-height: 1.1;
+}
+
+.lily-meaning p,
+.music-note {
+    color: var(--muted);
+    font-size: 0.94rem;
+    line-height: 1.7;
+}
+
+.lily-meaning p + p {
+    margin-top: 0.35rem;
+}
+
+.music-caption {
+    margin-bottom: 0.3rem;
+    text-align: center;
+}
+
+.music-note {
+    max-width: 31rem;
+    margin: 0 auto 0.95rem;
+    text-align: center;
+}
+
+.music-player {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    gap: 0.85rem 1rem;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    border-radius: 8px;
+    padding: 0.9rem;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 1rem 2.8rem rgba(78, 55, 50, 0.1);
+    backdrop-filter: blur(18px) saturate(1.08);
+}
+
+.music-visualizer {
+    display: flex;
+    width: 2.1rem;
+    height: 2rem;
+    align-items: end;
+    justify-content: center;
+    gap: 0.16rem;
+    opacity: 0.42;
+}
+
+.music-visualizer span {
+    width: 0.22rem;
+    height: 34%;
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--blush-deep), var(--sage));
+    transform-origin: bottom;
+}
+
+.music-player.is-playing .music-visualizer {
+    opacity: 0.9;
+}
+
+.music-player.is-playing .music-visualizer span {
+    animation: quietVisualizer 900ms ease-in-out infinite;
+}
+
+.music-player.is-playing .music-visualizer span:nth-child(2) {
+    animation-delay: 120ms;
+}
+
+.music-player.is-playing .music-visualizer span:nth-child(3) {
+    animation-delay: 240ms;
+}
+
+.music-player.is-playing .music-visualizer span:nth-child(4) {
+    animation-delay: 80ms;
+}
+
+.music-player.is-playing .music-visualizer span:nth-child(5) {
+    animation-delay: 180ms;
+}
+
+.play-button {
+    display: grid;
+    width: 3rem;
+    height: 3rem;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    color: #fffaf4;
+    background: linear-gradient(135deg, #3a3030, #8a6570);
+}
+
+.play-button svg {
+    width: 1.15rem;
+    height: 1.15rem;
+    fill: currentColor;
+}
+
+.pause-icon,
+.music-player.is-playing .play-icon {
+    display: none;
+}
+
+.music-player.is-playing .pause-icon {
+    display: block;
+}
+
+.song-info {
+    min-width: 0;
+}
+
+.song-title,
+.song-artist {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.song-title {
+    color: var(--ink);
+    font-size: 0.98rem;
+    font-weight: 600;
+}
+
+.song-artist,
+.time,
+.volume-label {
+    color: var(--muted);
+    font-size: 0.78rem;
+}
+
+.progress-container,
+.volume-container {
+    grid-column: 1 / -1;
+    display: grid;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.progress-container {
+    grid-template-columns: auto minmax(5rem, 1fr) auto;
+}
+
+.volume-container {
+    grid-template-columns: auto minmax(5rem, 1fr);
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: var(--rose);
+}
+
+.flower-gallery-section {
+    max-width: 39rem;
+    margin: clamp(2.5rem, 7vw, 4.5rem) auto 0;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line);
+}
+
+.gallery-title {
+    text-align: center;
+    color: var(--rose);
+    font-family: var(--font-letter);
+    font-size: clamp(1.65rem, 6vw, 2.1rem);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+}
+
+.gallery-intro {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.92rem;
+    margin-bottom: 1.6rem;
+}
+
+.flower-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.flower-card {
+    border: 1px solid rgba(159, 100, 112, 0.15);
+    border-radius: 8px;
+    padding: 1.4rem 1rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(255, 250, 244, 0.3));
+    backdrop-filter: blur(12px);
+    text-align: center;
+    transition: all 400ms cubic-bezier(0.2, 0.84, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.flower-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(217, 154, 170, 0.08), rgba(135, 151, 127, 0.05));
+    opacity: 0;
+    transition: opacity 400ms ease;
+    pointer-events: none;
+}
+
+.flower-card:hover {
+    transform: translateY(-0.6rem);
+    border-color: rgba(159, 100, 112, 0.35);
+    box-shadow: 0 0.8rem 2.2rem rgba(78, 55, 50, 0.12);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 250, 244, 0.5));
+}
+
+.flower-card:hover::before {
+    opacity: 1;
+}
+
+.flower-icon {
+    font-size: 2.8rem;
+    margin-bottom: 0.7rem;
+    transition: transform 400ms cubic-bezier(0.2, 0.84, 0.2, 1);
+    display: inline-block;
+}
+
+.flower-card:hover .flower-icon {
+    transform: scale(1.15) rotate(6deg);
+}
+
+.flower-name {
+    color: var(--ink);
+    font-family: var(--font-letter);
+    font-size: 1.08rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    line-height: 1.1;
+}
+
+.flower-meaning {
+    color: var(--rose);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+}
+
+.flower-note {
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.letter-footer {
+    padding: 1.35rem 0 0.2rem;
+    text-align: center;
+}
+
+.petal {
+    position: absolute;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+.burst-petal {
+    position: fixed;
+    left: var(--x);
+    top: var(--y);
+    z-index: 90;
+    width: var(--size);
+    height: calc(var(--size) * 1.65);
+    border-radius: 75% 25% 75% 25%;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(247, 215, 220, 0.74));
+    pointer-events: none;
+    animation: petalBurst 1600ms ease-out forwards;
+}
+
+.petal {
+    width: var(--size);
+    height: calc(var(--size) * 1.7);
+    border-radius: 75% 25% 75% 25%;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(247, 215, 220, 0.72) 66%, rgba(210, 154, 168, 0.3));
+    opacity: var(--opacity);
+    box-shadow: 0 0.45rem 0.9rem rgba(159, 100, 112, 0.08);
+    animation: petalFall var(--duration) linear forwards;
+}
+
+@keyframes lilyFloat {
+    50% {
+        transform: translateY(-0.38rem) rotate(1.5deg);
+    }
+}
+
+@keyframes ripple {
+    to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(4);
+    }
+}
+
+@keyframes bloomOverlay {
+    0% {
+        opacity: 0;
+    }
+    18%,
+    72% {
+        opacity: 1;
+    }
+    100% {
+        visibility: hidden;
+        opacity: 0;
+    }
+}
+
+@keyframes openingPetal {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -88%) rotate(var(--open-start, 0deg)) scale(0.16);
+    }
+    42%,
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -88%) rotate(var(--open-rotation, 0deg)) scale(1);
+    }
+}
+
+.bloom-flower span:nth-child(1) { --open-start: 0deg; --open-rotation: 0deg; animation-delay: 0ms; }
+.bloom-flower span:nth-child(2) { --open-start: 42deg; --open-rotation: 58deg; animation-delay: 130ms; }
+.bloom-flower span:nth-child(3) { --open-start: 94deg; --open-rotation: 116deg; animation-delay: 250ms; }
+.bloom-flower span:nth-child(4) { --open-start: 160deg; --open-rotation: 180deg; animation-delay: 370ms; }
+.bloom-flower span:nth-child(5) { --open-start: 218deg; --open-rotation: 238deg; animation-delay: 490ms; }
+.bloom-flower span:nth-child(6) { --open-start: 278deg; --open-rotation: 300deg; animation-delay: 610ms; }
+
+@keyframes letterEnter {
+    from {
+        opacity: 0;
+        transform: translateY(1rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes signaturePetal {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -88%) rotate(var(--sig-start, 0deg)) scale(0.12);
+    }
+    45%,
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -88%) rotate(var(--sig-rotation, 0deg)) scale(1);
+    }
+}
+
+.signature-bloom span:nth-child(1) { --sig-start: -18deg; --sig-rotation: -8deg; animation-delay: 0ms; }
+.signature-bloom span:nth-child(2) { --sig-start: 45deg; --sig-rotation: 60deg; animation-delay: 190ms; }
+.signature-bloom span:nth-child(3) { --sig-start: 112deg; --sig-rotation: 132deg; animation-delay: 360ms; }
+.signature-bloom span:nth-child(4) { --sig-start: 190deg; --sig-rotation: 212deg; animation-delay: 520ms; }
+.signature-bloom span:nth-child(5) { --sig-start: 270deg; --sig-rotation: 292deg; animation-delay: 680ms; }
+
+@keyframes driftAway {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    18% {
+        opacity: 0.85;
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(var(--drift-x), var(--drift-y), 0) rotate(135deg);
+    }
+}
+
+.signature-bloom i:nth-of-type(1) { --drift-x: 2.8rem; --drift-y: -2.4rem; }
+.signature-bloom i:nth-of-type(2) { --drift-x: 1.6rem; --drift-y: -3rem; }
+.signature-bloom i:nth-of-type(3) { --drift-x: 3.3rem; --drift-y: -1.4rem; }
+
+@keyframes petalFall {
+    from {
+        transform: translate3d(var(--x), var(--y, -9vh), 0) rotate(var(--r));
+    }
+    to {
+        opacity: 0;
+        transform: translate3d(calc(var(--x) + var(--drift)), 112vh, 0) rotate(calc(var(--r) + 250deg));
+    }
+}
+
+@keyframes petalBurst {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) rotate(0deg) scale(0.7);
+    }
+    18% {
+        opacity: 0.85;
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(var(--dx), var(--dy), 0) rotate(150deg) scale(1);
+    }
+}
+
+@keyframes quietVisualizer {
+    0%,
+    100% {
+        height: 28%;
+    }
+    50% {
+        height: 88%;
+    }
+}
+
+/* Enhanced flower animations */
+@keyframes flowerGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 0 rgba(247, 215, 220, 0.3));
+    }
+    50% {
+        filter: drop-shadow(0 0 1.2rem rgba(247, 215, 220, 0.6)) drop-shadow(0 0 2rem rgba(159, 100, 112, 0.2));
+    }
+}
+
+@keyframes petalSway {
+    0%, 100% {
+        transform: rotate(-0.5deg) translateX(0);
+    }
+    50% {
+        transform: rotate(0.5deg) translateX(0.3rem);
+    }
+}
+
+@keyframes flowerBounce {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-0.8rem) scale(1.02);
+    }
+}
+
+@keyframes flowerSpin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes flowerPulse {
+    0%, 100% {
+        opacity: 0.92;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes floralGradientShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes petalRipple {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+}
+
+@keyframes flowerNod {
+    0%, 100% {
+        transform: rotateX(0deg);
+    }
+    50% {
+        transform: rotateX(2deg);
+    }
+}
+
+@keyframes petalFloat {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-3rem) translateX(1rem);
+        opacity: 0;
+    }
+}
+
+@keyframes shimmering {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@media (min-width: 720px) {
+    .letter-section {
+        padding: 2.2rem 1.4rem 3rem;
+    }
+
+    .hero-content {
+        padding-inline: clamp(2rem, 7vw, 4.4rem);
+    }
+
+    .music-player {
+        grid-template-columns: auto auto minmax(10rem, 1fr) minmax(13rem, 1.15fr);
+    }
+
+    .progress-container {
+        grid-column: auto;
+    }
+
+    .volume-container {
+        grid-column: 3 / -1;
+    }
+}
+
+@media (max-width: 520px) {
+    .music-player {
+        grid-template-columns: auto auto minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 430px) {
+    .flower-progress {
+        top: 0.45rem;
+    }
+
+    .hero-content {
+        padding: 2rem 1rem;
+    }
+
+    .letter-card {
+        padding-inline: 1.05rem;
+    }
+
+    .letter-card::before {
+        inset: 0.5rem;
+    }
+
+    .letter-paragraph {
+        margin-bottom: 1.1rem;
+    }
+
+    .signature-row {
+        gap: 0.35rem;
+    }
+
+    .flower-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.9rem;
+    }
+
+    .flower-card {
+        padding: 1.2rem 0.8rem;
+    }
+
+    .flower-icon {
+        font-size: 2.4rem;
+    }
+
+    .gallery-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* =====================================================
+   CURSOR PETAL TRAIL
+   ===================================================== */
+.cursor-petal {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: var(--cp-size, 1rem);
+    line-height: 1;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--cp-rot, 0deg)) scale(1);
+    animation: cursorPetalFade var(--cp-dur, 900ms) ease-out forwards;
+    will-change: transform, opacity;
+    user-select: none;
+}
+
+@keyframes cursorPetalFade {
+    0% {
+        opacity: 0.9;
+        transform: translate(-50%, -50%) rotate(var(--cp-rot, 0deg)) scale(1) translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(calc(var(--cp-rot, 0deg) + 60deg)) scale(0.5) translateY(var(--cp-dy, -2rem));
+    }
+}
+
+/* =====================================================
+   HERO LILY GLOW AURA
+   ===================================================== */
+.hero-flower-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+    margin-bottom: 1.1rem;
+    /* Padding instead of negative inset so aura doesn't clip on small screens */
+    padding: 1.4rem;
+}
+
+.hero-flower-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(247, 215, 220, 0.5) 0%, rgba(255, 200, 210, 0.2) 50%, transparent 72%);
+    animation: lilyAuraPulse 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero-flower-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: -0.4rem;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(247, 215, 220, 0.22) 0%, transparent 65%);
+    animation: lilyAuraPulse 4s ease-in-out infinite 1.2s;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero-flower-wrapper .hero-flower {
+    margin-bottom: 0;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes lilyAuraPulse {
+    0%, 100% {
+        transform: scale(0.94);
+        opacity: 0.6;
+    }
+    50% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+}
+
+/* =====================================================
+   LETTER CARD BREATHING BORDER GLOW
+   — letter-card has overflow:hidden, so the ::after glow
+     must live on the wrapper (.letter-wrapper) instead
+   ===================================================== */
+.letter-wrapper {
+    position: relative;
+}
+
+.letter-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 10px;
+    pointer-events: none;
+    z-index: 0;
+    animation: letterBorderBreathe 5s ease-in-out infinite;
+}
+
+/* Override: the card itself just gets a subtle transition */
+.letter-card {
+    transition: box-shadow 1200ms ease;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes letterBorderBreathe {
+    0%, 100% {
+        box-shadow:
+            0 0 0 1px rgba(217, 154, 170, 0.12),
+            0 0 1.2rem rgba(217, 154, 170, 0),
+            inset 0 0 1.5rem rgba(247, 215, 220, 0);
+    }
+    50% {
+        box-shadow:
+            0 0 0 1.5px rgba(217, 154, 170, 0.38),
+            0 0 2.2rem rgba(217, 154, 170, 0.14),
+            inset 0 0 1.5rem rgba(247, 215, 220, 0.06);
+    }
+}
+
+/* =====================================================
+   LILY WATERMARK PULSE
+   ===================================================== */
+.letter-watermark {
+    animation: watermarkPulse 8s ease-in-out infinite;
+}
+
+@keyframes watermarkPulse {
+    0%, 100% {
+        opacity: 0.018;
+        transform: rotate(12deg) scale(1);
+    }
+    50% {
+        opacity: 0.05;
+        transform: rotate(13.5deg) scale(1.03);
+    }
+}
+
+/* =====================================================
+   FLOWER CARD 3D TILT + STAGGERED ENTRANCE
+   ===================================================== */
+.flower-gallery {
+    /* perspective only applied on desktop via media query below */
+}
+
+.flower-card {
+    /* NO preserve-3d — causes Safari mobile bugs */
+    transform: translateY(2rem);
+    opacity: 0;
+    /* backdrop-filter only on capable devices */
+    backdrop-filter: none;
+    transition:
+        transform 400ms cubic-bezier(0.2, 0.84, 0.2, 1),
+        box-shadow 400ms ease,
+        border-color 400ms ease,
+        background 400ms ease,
+        opacity 600ms ease;
+}
+
+/* Apply backdrop-filter only where supported & not low-power */
+@supports (backdrop-filter: blur(12px)) {
+    .flower-card {
+        backdrop-filter: blur(8px);
+    }
+}
+
+.flower-card.card-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.flower-card:not(:hover) {
+    transition:
+        transform 500ms cubic-bezier(0.2, 0.84, 0.2, 1),
+        box-shadow 500ms ease,
+        border-color 500ms ease,
+        background 500ms ease,
+        opacity 600ms ease;
+}
+
+/* Touch-friendly active state for mobile tap feedback */
+.flower-card:active {
+    transform: scale(0.97);
+    box-shadow: 0 0.3rem 1rem rgba(78, 55, 50, 0.12);
+}
+
+.flower-card:hover {
+    transform: translateY(-0.8rem);
+    border-color: rgba(159, 100, 112, 0.4);
+    box-shadow:
+        0 1.2rem 3rem rgba(78, 55, 50, 0.15),
+        0 0 1.8rem rgba(217, 154, 170, 0.12);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(255, 245, 248, 0.6));
+}
+
+.flower-card:hover .flower-icon {
+    transform: scale(1.22) rotate(8deg) translateY(-0.15rem);
+    filter: drop-shadow(0 0.4rem 0.8rem rgba(159, 100, 112, 0.22));
+}
+
+/* Staggered card delays */
+.flower-card:nth-child(1) { transition-delay: 0ms; }
+.flower-card:nth-child(2) { transition-delay: 80ms; }
+.flower-card:nth-child(3) { transition-delay: 160ms; }
+.flower-card:nth-child(4) { transition-delay: 240ms; }
+.flower-card:nth-child(5) { transition-delay: 320ms; }
+.flower-card:nth-child(6) { transition-delay: 400ms; }
+
+/* Desktop only: perspective for 3D tilt effect */
+@media (hover: hover) and (min-width: 600px) {
+    .flower-gallery {
+        perspective: 900px;
+    }
+
+    .flower-card {
+        transform-style: flat; /* keep flat, JS adds rotateX/Y on mousemove */
+    }
+}
+
+/* =====================================================
+   FLORAL VINE DIVIDER
+   ===================================================== */
+.floral-divider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    max-width: 39rem;
+    margin: clamp(1.8rem, 5vw, 3rem) auto 0;
+    padding-bottom: 0.6rem;
+}
+
+.floral-divider::before,
+.floral-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(159, 100, 112, 0.22) 30%,
+        rgba(217, 154, 170, 0.38) 60%,
+        rgba(159, 100, 112, 0.22) 80%,
+        transparent
+    );
+}
+
+.floral-divider-flowers {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.9rem;  /* base — children override */
+    line-height: 1;
+}
+
+.floral-divider-flowers span {
+    display: inline-block;
+    opacity: 0;
+    transform: scale(0.4) rotate(-20deg);
+    animation: floralDividerBloom 600ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-play-state: paused;
+}
+
+/* Tighter sizes on mobile */
+.floral-divider-flowers span:nth-child(1) { animation-delay: 200ms; font-size: 0.72rem; }
+.floral-divider-flowers span:nth-child(2) { animation-delay: 350ms; font-size: 0.9rem; }
+.floral-divider-flowers span:nth-child(3) { animation-delay: 150ms; font-size: 1.1rem; }
+.floral-divider-flowers span:nth-child(4) { animation-delay: 400ms; font-size: 0.9rem; }
+.floral-divider-flowers span:nth-child(5) { animation-delay: 250ms; font-size: 0.72rem; }
+
+/* Slightly larger on desktop */
+@media (min-width: 480px) {
+    .floral-divider-flowers span:nth-child(1) { font-size: 0.8rem; }
+    .floral-divider-flowers span:nth-child(2) { font-size: 1.1rem; }
+    .floral-divider-flowers span:nth-child(3) { font-size: 1.4rem; }
+    .floral-divider-flowers span:nth-child(4) { font-size: 1.1rem; }
+    .floral-divider-flowers span:nth-child(5) { font-size: 0.8rem; }
+}
+
+.floral-divider.divider-visible .floral-divider-flowers span {
+    animation-play-state: running;
+}
+
+@keyframes floralDividerBloom {
+    0% {
+        opacity: 0;
+        transform: scale(0.4) rotate(-20deg);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.12) rotate(4deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+/* Gentle sway after bloom */
+.floral-divider.divider-visible .floral-divider-flowers span:nth-child(odd) {
+    animation: floralDividerBloom 600ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+               floralDividerSway 3.5s ease-in-out infinite 1s;
+}
+
+.floral-divider.divider-visible .floral-divider-flowers span:nth-child(even) {
+    animation: floralDividerBloom 600ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+               floralDividerSway 3.5s ease-in-out infinite 1.4s;
+}
+
+@keyframes floralDividerSway {
+    0%, 100% { transform: rotate(-3deg) scale(1); }
+    50% { transform: rotate(3deg) scale(1.06); }
+}
+
+/* Override the old music-section top border — divider replaces it */
+.music-section {
+    margin-top: 0 !important;
+    border-top: none !important;
+    padding-top: 0.4rem !important;
+}
+
+/* Also a divider before the flower gallery section */
+.flower-gallery-section {
+    border-top: none !important;
+    padding-top: 0 !important;
+}
+
+.flower-gallery-section .floral-divider {
+    margin-top: 0;
+    margin-bottom: clamp(1.2rem, 3vw, 2rem);
+}
+
+/* =====================================================
+   Flower animation classes for enhanced styling
+   ===================================================== */
+.hero-flower {
+    animation: lilyFloat 9s ease-in-out infinite, flowerGlow 4s ease-in-out infinite;
+}
+
+.hero-flower.glow-effect {
+    animation: lilyFloat 9s ease-in-out infinite, flowerGlow 3s ease-in-out infinite;
+}
+
+.hero-flower.sway-effect {
+    animation: lilyFloat 9s ease-in-out infinite, petalSway 3s ease-in-out infinite;
+}
+
+.hero-flower.bounce-effect {
+    animation: flowerBounce 2s ease-in-out infinite;
+}
+
+.hero-flower.pulse-effect {
+    animation: flowerPulse 2.5s ease-in-out infinite;
+}
+
+.flower-corner,
+.letter-corner {
+    animation: petalSway 4s ease-in-out infinite;
+}
+
+.flower-corner.shimmer {
+    animation: petalSway 4s ease-in-out infinite, shimmering 3s ease-in-out infinite;
+    opacity: 0.20;
+}
+
+.letter-corner.shimmer {
+    animation: petalSway 4s ease-in-out infinite, shimmering 3s ease-in-out infinite;
+    opacity: 0.12;
+}
+
+.bloom-flower {
+    animation: floralGradientShift 4s ease-in-out infinite;
+}
+
+.bloom-flower.rotating {
+    animation: flowerSpin 8s linear infinite;
+}
+
+.signature-bloom {
+    animation: flowerPulse 3s ease-in-out infinite;
+}
+
+.signature-bloom.gentle-glow {
+    animation: flowerPulse 3s ease-in-out infinite, flowerGlow 4s ease-in-out infinite;
+}
+
+/* Petal animations */
+.petal.floating {
+    animation: petalFloat 3s ease-out forwards;
+}
+
+.burst-petal.shimmer {
+    animation: petalBurst 1600ms ease-out forwards, shimmering 800ms ease-in-out infinite;
+}
+
+/* =====================================================
+   #1 — CSS-DRAWN FLOWER BEHIND HERO TITLE
+   ===================================================== */
+.css-flower {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: clamp(6rem, 28vw, 9rem);
+    height: clamp(6rem, 28vw, 9rem);
+    transform: translate(-50%, -58%);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.55;
+}
+
+.css-petal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 36%;
+    height: 58%;
+    margin-left: -18%;
+    margin-top: -52%;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    background: linear-gradient(160deg,
+        rgba(255, 235, 240, 0.55) 0%,
+        rgba(247, 215, 220, 0.35) 50%,
+        rgba(217, 154, 170, 0.18) 100%);
+    transform-origin: 50% 100%;
+    animation: cssPetalSway 6s ease-in-out infinite;
+}
+
+.css-petal:nth-child(1) { transform: rotate(0deg);   animation-delay: 0s; }
+.css-petal:nth-child(2) { transform: rotate(60deg);  animation-delay: 0.4s; }
+.css-petal:nth-child(3) { transform: rotate(120deg); animation-delay: 0.8s; }
+.css-petal:nth-child(4) { transform: rotate(180deg); animation-delay: 1.2s; }
+.css-petal:nth-child(5) { transform: rotate(240deg); animation-delay: 1.6s; }
+.css-petal:nth-child(6) { transform: rotate(300deg); animation-delay: 2.0s; }
+
+.css-flower-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 18%;
+    height: 18%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 240, 200, 0.6), rgba(247, 215, 220, 0.3));
+    transform: translate(-50%, -50%);
+    animation: cssCenterPulse 4s ease-in-out infinite;
+}
+
+@keyframes cssPetalSway {
+    0%, 100% { opacity: 0.7; transform: rotate(var(--r, 0deg)) scaleY(1); }
+    50%       { opacity: 1;   transform: rotate(var(--r, 0deg)) scaleY(1.06); }
+}
+
+/* Give each petal its own --r so the sway animation sees the right rotation */
+.css-petal:nth-child(1) { --r: 0deg; }
+.css-petal:nth-child(2) { --r: 60deg; }
+.css-petal:nth-child(3) { --r: 120deg; }
+.css-petal:nth-child(4) { --r: 180deg; }
+.css-petal:nth-child(5) { --r: 240deg; }
+.css-petal:nth-child(6) { --r: 300deg; }
+
+@keyframes cssCenterPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+    50%       { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+}
+
+/* =====================================================
+   #2 — SAM.JPG POLAROID PHOTO FRAME
+   ===================================================== */
+.polaroid-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 1.6rem 0 2rem;
+}
+
+.polaroid {
+    position: relative;
+    background: #fff;
+    padding: 0.75rem 0.75rem 2.4rem;
+    border-radius: 3px;
+    box-shadow:
+        0 0.5rem 1.4rem rgba(78, 55, 50, 0.16),
+        0 0.1rem 0.3rem rgba(78, 55, 50, 0.08);
+    transform: rotate(-1.8deg);
+    transition: transform 400ms ease, box-shadow 400ms ease;
+    max-width: clamp(10rem, 55vw, 17rem);
+    width: 100%;
+}
+
+.polaroid:hover,
+.polaroid:focus-within {
+    transform: rotate(0deg) scale(1.03);
+    box-shadow:
+        0 1rem 2.8rem rgba(78, 55, 50, 0.2),
+        0 0 2rem rgba(217, 154, 170, 0.2);
+}
+
+.polaroid::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: 4px;
+    background: linear-gradient(135deg,
+        rgba(247, 215, 220, 0.4),
+        rgba(255, 255, 255, 0.1),
+        rgba(135, 151, 127, 0.15));
+    pointer-events: none;
+    animation: polaroidShimmer 6s ease-in-out infinite;
+}
+
+@keyframes polaroidShimmer {
+    0%, 100% { opacity: 0.4; }
+    50%       { opacity: 1; }
+}
+
+.polaroid-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 2px;
+    filter: saturate(0.9) brightness(1.04);
+    transition: filter 400ms ease;
+}
+
+.polaroid:hover .polaroid-img {
+    filter: saturate(1.1) brightness(1.08);
+}
+
+.polaroid-caption {
+    position: absolute;
+    bottom: 0.45rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--font-letter);
+    font-size: clamp(0.88rem, 3.5vw, 1rem);
+    color: var(--muted);
+    font-style: italic;
+    letter-spacing: 0.04em;
+}
+
+/* =====================================================
+   #3 — FLOATING FLOWER BUDS LEFT MARGIN
+   ===================================================== */
+.letter-body {
+    position: relative;
+}
+
+.letter-margin-buds {
+    position: absolute;
+    left: clamp(-2.2rem, -5vw, -1.4rem);
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    pointer-events: none;
+    z-index: 0;
+    gap: 0;
+}
+
+.margin-bud {
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+    opacity: 0;
+    display: block;
+    transform: translateX(-0.4rem) scale(0.7);
+    transition: opacity 700ms ease, transform 700ms ease;
+    animation: budSway 4s ease-in-out infinite;
+    line-height: 1;
+}
+
+.margin-bud.bud-visible {
+    opacity: 0.55;
+    transform: translateX(0) scale(1);
+}
+
+.margin-bud:nth-child(1) { animation-delay: 0s; }
+.margin-bud:nth-child(2) { animation-delay: 0.6s; }
+.margin-bud:nth-child(3) { animation-delay: 1.2s; }
+.margin-bud:nth-child(4) { animation-delay: 1.8s; }
+.margin-bud:nth-child(5) { animation-delay: 2.4s; }
+.margin-bud:nth-child(6) { animation-delay: 3.0s; }
+
+@keyframes budSway {
+    0%, 100% { transform: translateX(0) rotate(-4deg) scale(1); }
+    50%       { transform: translateX(0.25rem) rotate(4deg) scale(1.05); }
+}
+
+/* Hide buds on very small screens where there's no room */
+@media (max-width: 480px) {
+    .letter-margin-buds {
+        display: none;
+    }
+}
+
+/* =====================================================
+   #4 — PETAL RAIN BUTTON ON HERO
+   ===================================================== */
+.petal-rain-btn {
+    position: absolute;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    z-index: 2;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    border: 1px solid rgba(159, 100, 112, 0.22);
+    background: rgba(255, 253, 249, 0.7);
+    backdrop-filter: blur(12px);
+    font-size: 1.1rem;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    box-shadow: 0 0.4rem 1rem rgba(78, 55, 50, 0.08);
+    transition: transform 250ms ease, box-shadow 250ms ease, background 250ms ease;
+    animation: petalBtnFloat 3s ease-in-out infinite;
+}
+
+.petal-rain-btn:hover,
+.petal-rain-btn:focus-visible {
+    transform: scale(1.12);
+    background: rgba(255, 248, 244, 0.95);
+    box-shadow: 0 0.6rem 1.6rem rgba(159, 100, 112, 0.18);
+}
+
+.petal-rain-btn:active {
+    transform: scale(0.94);
+}
+
+@keyframes petalBtnFloat {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-0.3rem); }
+}
+
+/* =====================================================
+   #5 — ANIMATED HELLO TITLE — LETTER-BY-LETTER BLOOM
+   ===================================================== */
+.title-chars {
+    display: inline;
+}
+
+.tc {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.6rem) scale(0.8);
+    animation: tcBloom 600ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* "Hello" letter delays */
+.tc:nth-child(1)  { animation-delay: 0.10s; }
+.tc:nth-child(2)  { animation-delay: 0.18s; }
+.tc:nth-child(3)  { animation-delay: 0.26s; }
+.tc:nth-child(4)  { animation-delay: 0.34s; }
+.tc:nth-child(5)  { animation-delay: 0.42s; }
+/* .tc-gap sits at child 6 — not a .tc so no rule needed */
+/* "Samruddhi" — S is now the 6th .tc */
+.tc:nth-child(7)  { animation-delay: 0.52s; }
+.tc:nth-child(8)  { animation-delay: 0.60s; }
+.tc:nth-child(9)  { animation-delay: 0.68s; }
+.tc:nth-child(10) { animation-delay: 0.76s; }
+.tc:nth-child(11) { animation-delay: 0.84s; }
+.tc:nth-child(12) { animation-delay: 0.92s; }
+.tc:nth-child(13) { animation-delay: 1.00s; }
+.tc:nth-child(14) { animation-delay: 1.08s; }
+.tc:nth-child(15) { animation-delay: 1.16s; }
+
+/* Space character — just a gap, no animation */
+.tc-gap {
+    display: inline-block;
+    opacity: 1;
+    color: inherit;
+    /* width of roughly one character */
+    width: 0.28em;
+}
+
+/* Name styles removed — all one line now */
+.title-chars-name { display: inline; }
+.title-break { display: none; }
+
+.hero-title-bloom {
+    display: inline-block;
+    font-size: 0.38em;
+    vertical-align: 0.22em;
+    opacity: 0;
+    transform: scale(0.3) rotate(-30deg);
+    animation: bloomEmoji 700ms cubic-bezier(0.34, 1.56, 0.64, 1) 1.38s forwards;
+}
+
+@keyframes tcBloom {
+    0%   { opacity: 0; transform: translateY(0.6rem) scale(0.8); }
+    60%  { opacity: 1; transform: translateY(-0.15rem) scale(1.08); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes bloomEmoji {
+    0%   { opacity: 0; transform: scale(0.3) rotate(-30deg); }
+    60%  { opacity: 1; transform: scale(1.2) rotate(8deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* =====================================================
+   #6 — SHIMMER / SHINE ON LILY-MEANING BOX
+   ===================================================== */
+.lily-meaning {
+    position: relative;
+    overflow: hidden;
+}
+
+.lily-meaning::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -80%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        105deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.45) 50%,
+        transparent 70%
+    );
+    pointer-events: none;
+    animation: lilyMeaningShimmer 5s ease-in-out infinite 2s;
+}
+
+@keyframes lilyMeaningShimmer {
+    0%   { left: -80%; opacity: 0; }
+    10%  { opacity: 1; }
+    60%  { left: 130%; opacity: 1; }
+    61%, 100% { left: 130%; opacity: 0; }
+}
+
+/* =====================================================
+   #7 — FOOTER FLOWER GARDEN
+   ===================================================== */
+.footer-garden {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.35rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.fg {
+    display: inline-block;
+    animation: gardenSway 3s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+.fg:nth-child(1) { animation-delay: 0s;    font-size: 0.75rem; }
+.fg:nth-child(2) { animation-delay: 0.3s;  font-size: 1rem; }
+.fg:nth-child(3) { animation-delay: 0.6s;  font-size: 1.15rem; }
+.fg:nth-child(4) { animation-delay: 0.9s;  font-size: 1.1rem; }
+.fg:nth-child(5) { animation-delay: 1.2s;  font-size: 1.15rem; }
+.fg:nth-child(6) { animation-delay: 1.5s;  font-size: 1.2rem; }
+.fg:nth-child(7) { animation-delay: 1.8s;  font-size: 1rem; }
+.fg:nth-child(8) { animation-delay: 2.1s;  font-size: 0.75rem; }
+
+@keyframes gardenSway {
+    0%, 100% { transform: rotate(-4deg) translateY(0); }
+    25%       { transform: rotate(0deg) translateY(-0.2rem); }
+    50%       { transform: rotate(4deg) translateY(0); }
+    75%       { transform: rotate(0deg) translateY(-0.15rem); }
+}
+
+/* =====================================================
+   #8 — AMBIENT SCROLL GLOW — BACKGROUND DRIFT
+   JS sets --scroll-glow-x / --scroll-glow-y on body
+   ===================================================== */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 62% 52% at var(--scroll-glow-x, 18%) var(--scroll-glow-y, 6%),
+            rgba(247, 215, 220, 0.52), transparent 70%),
+        radial-gradient(ellipse 48% 42% at calc(100% - var(--scroll-glow-x, 18%)) calc(100% - var(--scroll-glow-y, 6%)),
+            rgba(229, 236, 216, 0.38), transparent 68%);
+    transition: background 0.6s ease;
+}
+
+/* =====================================================
+   MUSIC ENHANCEMENTS
+   ===================================================== */
+
+/* #9 — Mobile tap-to-play hint */
+.music-tap-hint {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--rose);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.6rem;
+    opacity: 0;
+    display: none;
+    animation: tapHintPulse 2s ease-in-out infinite;
+}
+
+.music-tap-hint.is-visible {
+    display: block;
+    opacity: 1;
+}
+
+@keyframes tapHintPulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50%       { opacity: 1;   transform: scale(1.04); }
+}
+
+/* #3 — Player glow when playing */
+.music-player {
+    transition: box-shadow 800ms ease, background 800ms ease;
+}
+
+.music-player.is-playing {
+    animation: playerBreathing 3s ease-in-out infinite;
+}
+
+@keyframes playerBreathing {
+    0%, 100% {
+        box-shadow:
+            0 1rem 2.8rem rgba(78, 55, 50, 0.1),
+            0 0 2.4rem rgba(217, 154, 170, 0.18),
+            0 0 0.6rem rgba(217, 154, 170, 0.08);
+        background: rgba(255, 250, 252, 0.58);
+    }
+    50% {
+        box-shadow:
+            0 1rem 2.8rem rgba(78, 55, 50, 0.12),
+            0 0 3.5rem rgba(217, 154, 170, 0.32),
+            0 0 1.2rem rgba(217, 154, 170, 0.18);
+        background: rgba(255, 244, 248, 0.68);
+    }
+}
+
+/* #1 — Play button ring bloom on click */
+.play-button {
+    position: relative;
+    transition: transform 200ms ease;
+}
+
+.play-button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(217, 154, 170, 0.7);
+    opacity: 0;
+    transform: scale(1);
+    pointer-events: none;
+}
+
+.play-button.bloom-ring::after {
+    animation: playRingBloom 600ms ease-out forwards;
+}
+
+@keyframes playRingBloom {
+    0%   { opacity: 0.9; transform: scale(1); }
+    100% { opacity: 0;   transform: scale(2.4); }
+}
+
+.play-button:active {
+    transform: scale(0.88);
+}
+
+/* #10 — Loop button */
+.loop-button {
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    border: 1px solid rgba(159, 100, 112, 0.2);
+    background: transparent;
+    color: var(--muted);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: color 250ms ease, border-color 250ms ease, background 250ms ease, transform 200ms ease;
+}
+
+.loop-button:active {
+    transform: scale(0.88);
+}
+
+.loop-button svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    fill: currentColor;
+}
+
+.loop-button.is-active {
+    color: var(--rose);
+    border-color: rgba(159, 100, 112, 0.45);
+    background: rgba(217, 154, 170, 0.12);
+}
+
+/* Make volume row fit the new button */
+.volume-container {
+    display: grid;
+    grid-template-columns: auto minmax(5rem, 1fr) auto;
+    gap: 0.65rem;
+    align-items: center;
+}
+
+/* #7 — Body mood shift when music plays */
+body.music-playing::before {
+    background:
+        radial-gradient(ellipse 62% 52% at var(--scroll-glow-x, 18%) var(--scroll-glow-y, 6%),
+            rgba(247, 185, 200, 0.65), transparent 70%),
+        radial-gradient(ellipse 48% 42% at calc(100% - var(--scroll-glow-x, 18%)) calc(100% - var(--scroll-glow-y, 6%)),
+            rgba(235, 210, 205, 0.5), transparent 68%);
+    transition: background 3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}

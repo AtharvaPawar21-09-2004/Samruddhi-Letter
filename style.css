@@ -180,9 +180,9 @@ button {
     margin: 0 auto 0.8rem;
     color: #2f2928;
     font-family: var(--font-display);
-    font-size: clamp(3.7rem, 17vw, 6.8rem);
+    font-size: clamp(1rem, 4vw, 1.12rem);
     font-weight: 500;
-    line-height: 0.95;
+    line-height: 1.7;
     letter-spacing: 0;
 }
 
@@ -1766,63 +1766,41 @@ input[type="range"] {
 }
 
 /* =====================================================
-   #5 — ANIMATED HELLO TITLE — LETTER-BY-LETTER BLOOM
+   #5 — TITLE BLOOM ANIMATION
    ===================================================== */
 .title-chars {
     display: inline;
 }
 
+/* All letters visible immediately — title animates as one unit */
 .tc {
     display: inline-block;
-    opacity: 0;
-    transform: translateY(0.6rem) scale(0.8);
-    animation: tcBloom 600ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    opacity: 1;
+    transform: none;
 }
 
-/* "Hello" letter delays */
-.tc:nth-child(1)  { animation-delay: 0.10s; }
-.tc:nth-child(2)  { animation-delay: 0.18s; }
-.tc:nth-child(3)  { animation-delay: 0.26s; }
-.tc:nth-child(4)  { animation-delay: 0.34s; }
-.tc:nth-child(5)  { animation-delay: 0.42s; }
-/* .tc-gap sits at child 6 — not a .tc so no rule needed */
-/* "Samruddhi" — S is now the 6th .tc */
-.tc:nth-child(7)  { animation-delay: 0.52s; }
-.tc:nth-child(8)  { animation-delay: 0.60s; }
-.tc:nth-child(9)  { animation-delay: 0.68s; }
-.tc:nth-child(10) { animation-delay: 0.76s; }
-.tc:nth-child(11) { animation-delay: 0.84s; }
-.tc:nth-child(12) { animation-delay: 0.92s; }
-.tc:nth-child(13) { animation-delay: 1.00s; }
-.tc:nth-child(14) { animation-delay: 1.08s; }
-.tc:nth-child(15) { animation-delay: 1.16s; }
-
-/* Space character — just a gap, no animation */
+/* Space gap */
 .tc-gap {
     display: inline-block;
     opacity: 1;
-    color: inherit;
-    /* width of roughly one character */
     width: 0.28em;
 }
 
-/* Name styles removed — all one line now */
 .title-chars-name { display: inline; }
 .title-break { display: none; }
 
 .hero-title-bloom {
     display: inline-block;
-    font-size: 0.38em;
-    vertical-align: 0.22em;
+    font-size: 0.72em;
+    vertical-align: 0.06em;
     opacity: 0;
     transform: scale(0.3) rotate(-30deg);
-    animation: bloomEmoji 700ms cubic-bezier(0.34, 1.56, 0.64, 1) 1.38s forwards;
+    animation: bloomEmoji 700ms cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s forwards;
 }
 
-@keyframes tcBloom {
-    0%   { opacity: 0; transform: translateY(0.6rem) scale(0.8); }
-    60%  { opacity: 1; transform: translateY(-0.15rem) scale(1.08); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes titleFadeIn {
+    0%   { opacity: 0; transform: translateY(0.5rem); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes bloomEmoji {
@@ -1919,8 +1897,6 @@ body::before {
 /* =====================================================
    MUSIC ENHANCEMENTS
    ===================================================== */
-
-/* #9 — Mobile tap-to-play hint */
 .music-tap-hint {
     text-align: center;
     font-size: 0.82rem;
@@ -2046,6 +2022,451 @@ body.music-playing::before {
             rgba(235, 210, 205, 0.5), transparent 68%);
     transition: background 3s ease;
 }
+
+/* =====================================================
+   CLOSING MOMENT — Lily Bloom + Handwritten + Care Row
+   ===================================================== */
+
+/* ── Blooming lily scene ── */
+.bloom-lily-scene {
+    display: flex;
+    justify-content: center;
+    margin: 1rem auto 0;
+    max-width: 39rem;
+}
+
+.bloom-lily-svg {
+    width: clamp(7rem, 28vw, 10rem);
+    height: auto;
+    overflow: visible;
+    filter: drop-shadow(0 0.6rem 1.4rem rgba(159, 100, 112, 0.12));
+}
+
+/* stem draws in */
+.bl-stem {
+    stroke-dasharray: 90;
+    stroke-dashoffset: 90;
+}
+
+.bloom-lily-scene.lily-active .bl-stem {
+    animation: stemGrow 800ms ease-out forwards;
+}
+
+@keyframes stemGrow {
+    to { stroke-dashoffset: 0; }
+}
+
+/* leaves unfurl */
+.bloom-lily-scene.lily-active .bl-leaf-l {
+    animation: leafUnfurl 600ms ease-out 700ms forwards;
+}
+
+.bloom-lily-scene.lily-active .bl-leaf-r {
+    animation: leafUnfurl 600ms ease-out 900ms forwards;
+}
+
+@keyframes leafUnfurl {
+    0%   { opacity: 0; transform: scale(0.4); }
+    60%  { opacity: 1; transform: scale(1.08); }
+    100% { opacity: 0.9; transform: scale(1); }
+}
+
+/* petals open one by one */
+.bloom-lily-scene.lily-active .bl-petal:nth-child(1) { animation: petalOpen 700ms cubic-bezier(0.34,1.56,0.64,1) 1100ms forwards; }
+.bloom-lily-scene.lily-active .bl-petal:nth-child(2) { animation: petalOpen 700ms cubic-bezier(0.34,1.56,0.64,1) 1250ms forwards; }
+.bloom-lily-scene.lily-active .bl-petal:nth-child(3) { animation: petalOpen 700ms cubic-bezier(0.34,1.56,0.64,1) 1400ms forwards; }
+.bloom-lily-scene.lily-active .bl-petal:nth-child(4) { animation: petalOpen 700ms cubic-bezier(0.34,1.56,0.64,1) 1550ms forwards; }
+.bloom-lily-scene.lily-active .bl-petal:nth-child(5) { animation: petalOpen 700ms cubic-bezier(0.34,1.56,0.64,1) 1700ms forwards; }
+.bloom-lily-scene.lily-active .bl-petal:nth-child(6) { animation: petalOpen 700ms cubic-bezier(0.34,1.56,0.64,1) 1850ms forwards; }
+
+@keyframes petalOpen {
+    0%   { opacity: 0; transform: scale(0.15) rotate(0deg); }
+    55%  { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 0.92; transform: scale(1); }
+}
+
+/* centre and stamen pop */
+.bloom-lily-scene.lily-active .bl-centre {
+    animation: centreBloom 500ms cubic-bezier(0.34,1.56,0.64,1) 2100ms forwards;
+}
+
+.bloom-lily-scene.lily-active .bl-stamen {
+    animation: centreBloom 400ms cubic-bezier(0.34,1.56,0.64,1) 2300ms forwards;
+}
+
+.bloom-lily-scene.lily-active .bl-stamen:nth-child(2) { animation-delay: 2380ms; }
+.bloom-lily-scene.lily-active .bl-stamen:nth-child(3) { animation-delay: 2460ms; }
+
+@keyframes centreBloom {
+    0%   { opacity: 0; transform: scale(0.3); }
+    60%  { opacity: 1; transform: scale(1.15); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* glow halo pulses after bloom */
+.bloom-lily-scene.lily-active .bl-glow {
+    animation: glowFadeIn 800ms ease 2400ms forwards,
+               glowPulse 3s ease-in-out 3200ms infinite;
+}
+
+@keyframes glowFadeIn {
+    to { opacity: 1; }
+}
+
+@keyframes glowPulse {
+    0%, 100% { r: 34; opacity: 0.18; }
+    50%      { r: 42; opacity: 0.32; }
+}
+
+/* whole flower gently floats after bloom */
+.bloom-lily-scene.lily-active .bl-petals {
+    animation: lilyFloat 6s ease-in-out 3s infinite;
+}
+
+@keyframes lilyFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+}
+
+/* ── Handwritten line ── */
+.handwritten-line {
+    max-width: 39rem;
+    margin: 1.2rem auto 0;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.hw-text {
+    font-family: var(--font-letter);
+    font-size: clamp(1.1rem, 4.5vw, 1.38rem);
+    font-style: italic;
+    color: var(--rose);
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+    /* typewriter reveal via clip-path */
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0ms;
+}
+
+.handwritten-line.hw-active .hw-text {
+    animation: hwWrite 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes hwWrite {
+    0%   { clip-path: inset(0 100% 0 0); }
+    100% { clip-path: inset(0 0% 0 0); }
+}
+
+.hw-underline {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--rose), transparent);
+    max-width: 22rem;
+    margin: 0.5rem auto 0;
+    transform: scaleX(0);
+    transform-origin: center;
+}
+
+.handwritten-line.hw-active .hw-underline {
+    animation: hwLine 800ms ease 2.2s forwards;
+}
+
+@keyframes hwLine {
+    to { transform: scaleX(1); }
+}
+
+/* ── Written with care row ── */
+.care-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.8rem;
+    max-width: 39rem;
+    margin: 1.6rem auto 0;
+    padding: 0.9rem 1.2rem;
+    border: 1px solid rgba(159, 100, 112, 0.12);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.3);
+    font-family: var(--font-body);
+    font-size: clamp(0.78rem, 3vw, 0.9rem);
+    color: var(--muted);
+    letter-spacing: 0.06em;
+}
+
+.care-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.care-icon {
+    font-size: 1em;
+    animation: careIconSway 3.5s ease-in-out infinite;
+    display: inline-block;
+    transform-origin: bottom center;
+}
+
+.care-item:nth-child(1) .care-icon { animation-delay: 0s; }
+.care-item:nth-child(3) .care-icon { animation-delay: 0.6s; }
+.care-item:nth-child(5) .care-icon { animation-delay: 1.2s; }
+
+@keyframes careIconSway {
+    0%, 100% { transform: rotate(-5deg); }
+    50%      { transform: rotate(5deg); }
+}
+
+.care-dot {
+    color: rgba(159, 100, 112, 0.35);
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+/* =====================================================
+   #2 — SECTION PETALS (big, slow, deliberate)
+   ===================================================== */
+.section-petals {
+    position: relative;
+    width: 100%;
+    max-width: 39rem;
+    height: 4rem;
+    margin: 0 auto;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Each petal is a large soft shape */
+.sp {
+    position: absolute;
+    width: var(--sp-w, 18px);
+    height: calc(var(--sp-w, 18px) * 1.8);
+    border-radius: 80% 20% 80% 20%;
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.92),
+        rgba(249, 220, 228, 0.78) 55%,
+        rgba(220, 155, 175, 0.45)
+    );
+    box-shadow: 0 2px 8px rgba(159, 100, 112, 0.1);
+    opacity: 0;
+    animation: spFall var(--sp-dur, 6s) var(--sp-ease, ease-in-out) var(--sp-delay, 0s) infinite;
+}
+
+/* Individual petal positions, sizes, timings */
+.sp:nth-child(1)  { --sp-w:22px; left:8%;  --sp-dur:7s;   --sp-delay:0s;    --sp-rot:25deg;  --sp-drift:30px; }
+.sp:nth-child(2)  { --sp-w:16px; left:20%; --sp-dur:8.5s; --sp-delay:1.2s;  --sp-rot:-20deg; --sp-drift:-20px; }
+.sp:nth-child(3)  { --sp-w:24px; left:35%; --sp-dur:6.5s; --sp-delay:0.6s;  --sp-rot:35deg;  --sp-drift:40px; }
+.sp:nth-child(4)  { --sp-w:14px; left:50%; --sp-dur:9s;   --sp-delay:2s;    --sp-rot:-30deg; --sp-drift:-35px; }
+.sp:nth-child(5)  { --sp-w:20px; left:62%; --sp-dur:7.5s; --sp-delay:0.3s;  --sp-rot:15deg;  --sp-drift:25px; }
+.sp:nth-child(6)  { --sp-w:18px; left:75%; --sp-dur:8s;   --sp-delay:1.8s;  --sp-rot:-25deg; --sp-drift:-30px; }
+.sp:nth-child(7)  { --sp-w:26px; left:85%; --sp-dur:6s;   --sp-delay:0.9s;  --sp-rot:40deg;  --sp-drift:45px; }
+.sp:nth-child(8)  { --sp-w:12px; left:28%; --sp-dur:10s;  --sp-delay:3s;    --sp-rot:-15deg; --sp-drift:-15px; }
+.sp:nth-child(9)  { --sp-w:19px; left:45%; --sp-dur:7.2s; --sp-delay:1.5s;  --sp-rot:28deg;  --sp-drift:35px; }
+.sp:nth-child(10) { --sp-w:15px; left:90%; --sp-dur:8.8s; --sp-delay:2.4s;  --sp-rot:-35deg; --sp-drift:-25px; }
+
+/* Section petals start falling once visible */
+.section-petals.petals-active .sp {
+    opacity: 0; /* animation handles opacity */
+    animation-play-state: running;
+}
+
+/* Before active — keep paused */
+.sp {
+    animation-play-state: paused;
+}
+
+@keyframes spFall {
+    0% {
+        transform: translateY(-20px) translateX(0) rotate(var(--sp-rot, 0deg)) scale(0.8);
+        opacity: 0;
+    }
+    8% { opacity: 0.82; }
+    85% { opacity: 0.65; }
+    100% {
+        transform: translateY(10rem) translateX(var(--sp-drift, 0px)) rotate(calc(var(--sp-rot, 0deg) + 180deg)) scale(0.9);
+        opacity: 0;
+    }
+}
+
+/* =====================================================
+   #3 — WAX SEAL
+   ===================================================== */
+.wax-seal-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1.2rem auto 0;
+    max-width: 39rem;
+}
+
+.wax-seal {
+    position: relative;
+    width: clamp(5rem, 20vw, 7.5rem);
+    height: clamp(5rem, 20vw, 7.5rem);
+    /* starts big and slams down — stamp animation triggers via JS class */
+    transform: scale(0) rotate(-15deg);
+    opacity: 0;
+}
+
+.wax-seal.seal-stamp {
+    animation: sealStamp 800ms cubic-bezier(0.22, 0.68, 0.2, 1.6) forwards;
+}
+
+@keyframes sealStamp {
+    0%   { transform: scale(2.2) rotate(-15deg); opacity: 0; }
+    40%  { transform: scale(0.88) rotate(3deg);  opacity: 1; }
+    65%  { transform: scale(1.06) rotate(-1deg); opacity: 1; }
+    82%  { transform: scale(0.97) rotate(0.5deg); }
+    100% { transform: scale(1) rotate(0deg);     opacity: 1; }
+}
+
+.ws-svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Diagonal shine that sweeps across after stamp */
+.ws-shine {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.ws-shine::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -80%;
+    width: 60%;
+    height: 200%;
+    background: linear-gradient(
+        105deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.28) 50%,
+        transparent 70%
+    );
+    opacity: 0;
+    transform: skewX(-15deg);
+}
+
+.wax-seal.seal-stamp .ws-shine::after {
+    animation: sealShine 600ms ease 700ms forwards;
+}
+
+@keyframes sealShine {
+    0%   { left: -80%; opacity: 0; }
+    20%  { opacity: 1; }
+    100% { left: 120%; opacity: 0; }
+}
+
+/* Gentle slow rotation after stamp settles */
+.wax-seal.seal-stamp {
+    animation:
+        sealStamp 800ms cubic-bezier(0.22, 0.68, 0.2, 1.6) forwards,
+        sealFloat 5s ease-in-out 1.2s infinite;
+}
+
+@keyframes sealFloat {
+    0%, 100% { transform: scale(1) translateY(0) rotate(0deg); }
+    50%      { transform: scale(1) translateY(-4px) rotate(0.8deg); }
+}
+
+.ws-caption {
+    margin-top: 0.7rem;
+    font-family: var(--font-letter);
+    font-size: clamp(0.78rem, 3vw, 0.9rem);
+    font-style: italic;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    opacity: 0;
+}
+
+.wax-seal-wrapper.seal-visible .ws-caption {
+    animation: wsCaptionFade 700ms ease 1.2s forwards;
+}
+
+@keyframes wsCaptionFade {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =====================================================
+   #3 — PAPER TEXTURE ON LETTER CARD
+   ===================================================== */
+.letter-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    mix-blend-mode: multiply;
+}
+
+/* =====================================================
+   #6 — GOLDEN HOUR BACKGROUND SHIFT
+   ===================================================== */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 70% 55% at 60% 80%,
+            rgba(255, 210, 140, 0.0), transparent 70%),
+        radial-gradient(ellipse 55% 45% at 30% 90%,
+            rgba(255, 185, 100, 0.0), transparent 65%);
+    transition: background 2.5s ease;
+}
+
+body.golden-hour::after {
+    background:
+        radial-gradient(ellipse 70% 55% at 60% 80%,
+            rgba(255, 210, 140, 0.28), transparent 70%),
+        radial-gradient(ellipse 55% 45% at 30% 90%,
+            rgba(255, 185, 100, 0.18), transparent 65%);
+}
+
+/* =====================================================
+   #7 — CONFETTI BURST
+   ===================================================== */
+.confetti-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.confetti-piece {
+    position: absolute;
+    width: var(--cw, 8px);
+    height: var(--ch, 8px);
+    border-radius: var(--cr, 50%);
+    background: var(--cc, #f7c5d0);
+    opacity: 0;
+    animation: confettiFall var(--cd, 2s) var(--ce, ease-out) var(--cdelay, 0s) forwards;
+    transform-origin: center;
+}
+
+@keyframes confettiFall {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    15% { opacity: 1; }
+    100% {
+        opacity: 0;
+        transform: translate(var(--cdx, 0px), var(--cdy, 120px)) rotate(var(--cdr, 360deg)) scale(0.6);
+    }
+}
+
+/* ===================================================== */
 
 @media (prefers-reduced-motion: reduce) {
     *,

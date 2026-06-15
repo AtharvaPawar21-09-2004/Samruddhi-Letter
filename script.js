@@ -614,9 +614,12 @@ function init() {
     setupCursorPetalTrail();
     setupFlowerCards();
     setupFloralDividers();
-    setupPetalRainButton();   // #4
-    setupMarginBuds();        // #3
-    setupAmbientGlow();       // #8
+    setupPetalRainButton();
+    setupMarginBuds();
+    setupAmbientGlow();
+    setupClosingMoment();
+    setupGoldenHour();
+    setupConfetti();
 
     els.openButton?.addEventListener("click", openLetter);
     els.closeButton?.addEventListener("click", closeLetter);
@@ -944,4 +947,352 @@ function setupAmbientGlow() {
     }, { passive: true });
 
     updateGlow();
+}
+
+// ─────────────────────────────────────────────
+// GRATITUDE SCENE — SVG + Web Animations API
+// Full sequence: walk-in → hand on heart →
+// salute → whole-body bow → smile → sparkles
+// → text fade in
+// ─────────────────────────────────────────────
+function setupGratitudeScene() {
+    const scene = document.getElementById("gratitudeScene");
+    if (!scene || prefersReducedMotion) {
+        // reduced motion: just show everything immediately
+        const svg = document.getElementById("gSvg");
+        const txt = document.getElementById("gText");
+        const spr = document.getElementById("gSparkles");
+        if (svg) { svg.style.transform = "translateX(0)"; svg.style.opacity = "1"; }
+        if (txt) { txt.style.opacity = "1"; txt.style.transform = "none"; }
+        if (spr) { spr.setAttribute("opacity", "1"); }
+        return;
+    }
+
+    let played = false;
+
+    function runScene() {
+        if (played) return;
+        played = true;
+
+        const svg       = document.getElementById("gSvg");
+        const charGrp   = document.getElementById("gCharSvg");
+        const headGrp   = document.getElementById("gHeadGroup");
+        const armR      = document.getElementById("gArmR");
+        const foreR     = document.getElementById("gForeR");
+        const legL      = document.getElementById("gLegL");
+        const legR      = document.getElementById("gLegR");
+        const smile     = document.getElementById("gSmile");
+        const eyeL      = document.getElementById("eyeL");
+        const eyeR      = document.getElementById("eyeR");
+        const sparkles  = document.getElementById("gSparkles");
+        const sparks    = scene.querySelectorAll(".spark");
+        const txt       = document.getElementById("gText");
+
+        if (!svg || !charGrp) return;
+
+        const ease    = "cubic-bezier(0.4, 0, 0.2, 1)";
+        const easeOut = "cubic-bezier(0.2, 0.8, 0.2, 1)";
+        const spring  = "cubic-bezier(0.34, 1.56, 0.64, 1)";
+
+        // ── STEP 1: Walk in from left (0 → 1400ms) ──
+        svg.animate([
+            { transform: "translateX(-110vw)", opacity: 0 },
+            { transform: "translateX(-80vw)",  opacity: 1, offset: 0.1 },
+            { transform: "translateX(-50vw) translateY(-4px)", offset: 0.3 },
+            { transform: "translateX(-25vw) translateY(3px)",  offset: 0.5 },
+            { transform: "translateX(-10vw) translateY(-3px)", offset: 0.7 },
+            { transform: "translateX(-2vw)  translateY(2px)",  offset: 0.85 },
+            { transform: "translateX(0)     translateY(0)",    opacity: 1 }
+        ], { duration: 1600, easing: ease, fill: "forwards" });
+
+        // walking leg swing during walk-in
+        legL.animate([
+            { transform: "rotate(-10deg)", transformOrigin: "100px 228px" },
+            { transform: "rotate(10deg)",  transformOrigin: "100px 228px" },
+            { transform: "rotate(-8deg)",  transformOrigin: "100px 228px" },
+            { transform: "rotate(6deg)",   transformOrigin: "100px 228px" },
+            { transform: "rotate(0deg)",   transformOrigin: "100px 228px" }
+        ], { duration: 1400, easing: ease, fill: "forwards" });
+
+        legR.animate([
+            { transform: "rotate(10deg)",  transformOrigin: "100px 230px" },
+            { transform: "rotate(-10deg)", transformOrigin: "100px 230px" },
+            { transform: "rotate(8deg)",   transformOrigin: "100px 230px" },
+            { transform: "rotate(-6deg)",  transformOrigin: "100px 230px" },
+            { transform: "rotate(0deg)",   transformOrigin: "100px 230px" }
+        ], { duration: 1400, easing: ease, fill: "forwards" });
+
+        // ── STEP 2: Hand over heart (1800 → 2600ms) ──
+        window.setTimeout(() => {
+            armR.animate([
+                { transform: "rotate(0deg)",   transformOrigin: "124px 162px" },
+                { transform: "rotate(-50deg)", transformOrigin: "124px 162px" }
+            ], { duration: 700, easing: spring, fill: "forwards" });
+
+            foreR.animate([
+                { transform: "rotate(0deg)",   transformOrigin: "136px 172px" },
+                { transform: "rotate(20deg)",  transformOrigin: "136px 172px" }
+            ], { duration: 700, easing: spring, fill: "forwards" });
+        }, 1800);
+
+        // ── STEP 3: Rise to respectful salute (3000 → 3600ms) ──
+        window.setTimeout(() => {
+            armR.animate([
+                { transform: "rotate(-50deg)", transformOrigin: "124px 162px" },
+                { transform: "rotate(-85deg)", transformOrigin: "124px 162px" }
+            ], { duration: 600, easing: easeOut, fill: "forwards" });
+
+            foreR.animate([
+                { transform: "rotate(20deg)",  transformOrigin: "136px 172px" },
+                { transform: "rotate(-15deg)", transformOrigin: "136px 172px" }
+            ], { duration: 600, easing: easeOut, fill: "forwards" });
+        }, 3000);
+
+        // ── STEP 4: Whole-body gentle bow (3800 → 4500ms) ──
+        window.setTimeout(() => {
+            charGrp.animate([
+                { transform: "rotate(0deg)",    transformOrigin: "100px 280px" },
+                { transform: "rotate(12deg)",   transformOrigin: "100px 280px", offset: 0.6 },
+                { transform: "rotate(10deg)",   transformOrigin: "100px 280px" }
+            ], { duration: 700, easing: easeOut, fill: "forwards" });
+        }, 3800);
+
+        // ── STEP 5: Eyes scrunch, smile widens (4200ms) ──
+        window.setTimeout(() => {
+            // eyes scrunch
+            eyeL.animate([
+                { ry: 8 }, { ry: 3 }
+            ], { duration: 400, easing: easeOut, fill: "forwards" });
+            eyeR.animate([
+                { ry: 8 }, { ry: 3 }
+            ], { duration: 400, easing: easeOut, fill: "forwards" });
+
+            // smile widens via path morph
+            smile.animate([
+                { d: "path('M88 128 Q100 138 112 128')" },
+                { d: "path('M83 126 Q100 142 117 126')" }
+            ], { duration: 500, easing: spring, fill: "forwards" });
+        }, 4200);
+
+        // ── STEP 6: Sparkles appear (4600ms) ──
+        window.setTimeout(() => {
+            sparkles.animate([
+                { opacity: 0 }, { opacity: 1 }
+            ], { duration: 600, easing: "ease", fill: "forwards" });
+
+            // each spark floats independently
+            sparks.forEach((sp, i) => {
+                sp.animate([
+                    { transform: "translateY(0) scale(1)",   opacity: 0.9 },
+                    { transform: "translateY(-8px) scale(1.4)", opacity: 1,  offset: 0.5 },
+                    { transform: "translateY(0) scale(0.8)", opacity: 0.6 }
+                ], {
+                    duration: 2200 + i * 150,
+                    delay: i * 120,
+                    iterations: Infinity,
+                    easing: "ease-in-out"
+                });
+            });
+        }, 4600);
+
+        // ── STEP 7: Text fades in (5200ms) ──
+        window.setTimeout(() => {
+            if (!txt) return;
+            txt.animate([
+                { opacity: 0, transform: "translateY(10px)" },
+                { opacity: 1, transform: "translateY(0)" }
+            ], { duration: 1000, easing: easeOut, fill: "forwards" });
+        }, 5200);
+    }
+
+    // Observe and trigger once when scrolled into view
+    function observeScene() {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                window.setTimeout(runScene, 300);
+                obs.unobserve(scene);
+            });
+        }, { threshold: 0.3 });
+        obs.observe(scene);
+    }
+
+    // Hook to open button + fallback
+    const openBtn = document.getElementById("openButton");
+    if (openBtn) {
+        openBtn.addEventListener("click", () => {
+            window.setTimeout(observeScene, 1400);
+        }, { once: true });
+    }
+    window.setTimeout(observeScene, 600);
+}
+
+// ─────────────────────────────────────────────
+// CLOSING MOMENT — lily bloom + handwritten line
+// + section petals + wax seal
+// ─────────────────────────────────────────────
+function setupClosingMoment() {
+    if (prefersReducedMotion) {
+        document.getElementById("bloomLilyScene")?.classList.add("lily-active");
+        document.getElementById("handwrittenLine")?.classList.add("hw-active");
+        const seal = document.getElementById("waxSeal");
+        const wrap = document.getElementById("waxSealWrapper");
+        if (seal) { seal.style.transform = "scale(1)"; seal.style.opacity = "1"; }
+        if (wrap) wrap.classList.add("seal-visible");
+        return;
+    }
+
+    // ── All closing animations trigger when "— Atharva" signature is visible ──
+    function activateAll() {
+        // #2 Section petals
+        document.getElementById("sectionPetals")?.classList.add("petals-active");
+
+        // #1 Lily bloom — small delay so she sees the signature first
+        window.setTimeout(() => {
+            document.getElementById("bloomLilyScene")?.classList.add("lily-active");
+        }, 400);
+
+        // Handwritten line — after lily starts
+        window.setTimeout(() => {
+            document.getElementById("handwrittenLine")?.classList.add("hw-active");
+        }, 800);
+
+        // Wax seal — stamps in after handwritten line
+        window.setTimeout(() => {
+            const waxSeal = document.getElementById("waxSeal");
+            const waxWrap = document.getElementById("waxSealWrapper");
+            if (waxSeal) waxSeal.classList.add("seal-stamp");
+            if (waxWrap) waxWrap.classList.add("seal-visible");
+        }, 1400);
+    }
+
+    // Watch the signature row — when "— Atharva" enters view, fire everything
+    function observeSignature() {
+        const sig = document.getElementById("signatureRow");
+        if (!sig) return;
+
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                activateAll();
+                obs.unobserve(sig);
+            });
+        }, { threshold: 0.6 });
+
+        obs.observe(sig);
+    }
+
+    const openBtn = document.getElementById("openButton");
+    if (openBtn) {
+        openBtn.addEventListener("click", () => {
+            window.setTimeout(observeSignature, 1400);
+        }, { once: true });
+    }
+    window.setTimeout(observeSignature, 600);
+}
+
+// ─────────────────────────────────────────────
+// #6 — GOLDEN HOUR BACKGROUND SHIFT
+// Activates when wax seal area enters view,
+// reverses when scrolled back up
+// ─────────────────────────────────────────────
+function setupGoldenHour() {
+    const trigger = document.getElementById("waxSealWrapper");
+    if (!trigger || prefersReducedMotion) return;
+
+    function observeGolden() {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    document.body.classList.add("golden-hour");
+                } else {
+                    document.body.classList.remove("golden-hour");
+                }
+            });
+        }, { threshold: 0.2 });
+        obs.observe(trigger);
+    }
+
+    const openBtn = document.getElementById("openButton");
+    if (openBtn) {
+        openBtn.addEventListener("click", () => {
+            window.setTimeout(observeGolden, 1400);
+        }, { once: true });
+    }
+    window.setTimeout(observeGolden, 600);
+}
+
+// ─────────────────────────────────────────────
+// #7 — CONFETTI BURST at the footer
+// Fires once when she reaches the very end
+// ─────────────────────────────────────────────
+function setupConfetti() {
+    const footer = document.getElementById("letterFooter");
+    const layer  = document.getElementById("confettiLayer");
+    if (!footer || !layer || prefersReducedMotion) return;
+
+    const colors = [
+        "#f7c5d0", "#fde9a0", "#fff",
+        "#d4a8c7", "#a8d4c4", "#f9b8c4",
+        "#ffe4b8", "#c8e6c9"
+    ];
+
+    function burst() {
+        const count = window.innerWidth < 600 ? 40 : 70;
+        for (let i = 0; i < count; i++) {
+            const pc = document.createElement("div");
+            pc.className = "confetti-piece";
+
+            const isRect = Math.random() > 0.5;
+            const w = 5 + Math.random() * 8;
+            const h = isRect ? w * 0.4 : w;
+
+            pc.style.setProperty("--cw", `${w}px`);
+            pc.style.setProperty("--ch", `${h}px`);
+            pc.style.setProperty("--cr", isRect ? "2px" : "50%");
+            pc.style.setProperty("--cc", colors[Math.floor(Math.random() * colors.length)]);
+            pc.style.setProperty("--cdelay", `${Math.random() * 0.6}s`);
+            pc.style.setProperty("--cd", `${1.8 + Math.random() * 1.2}s`);
+            pc.style.setProperty("--ce", "cubic-bezier(0.2, 0.8, 0.4, 1)");
+
+            // Spread from centre of footer
+            const angle = (Math.random() * 180) - 90; // -90 to +90 deg (upward spread)
+            const dist  = 60 + Math.random() * 180;
+            const dx    = Math.sin(angle * Math.PI / 180) * dist;
+            const dy    = -Math.abs(Math.cos(angle * Math.PI / 180) * dist) - 40; // always goes up first
+
+            pc.style.setProperty("--cdx", `${dx}px`);
+            pc.style.setProperty("--cdy", `${dy + 200}px`); // then falls down
+            pc.style.setProperty("--cdr", `${Math.random() * 720 - 360}deg`);
+
+            // Start at random x position along footer
+            pc.style.left = `${20 + Math.random() * 60}%`;
+            pc.style.bottom = "10px";
+
+            layer.appendChild(pc);
+            window.setTimeout(() => pc.remove(), 3200);
+        }
+    }
+
+    let fired = false;
+
+    function observeFooter() {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting || fired) return;
+                fired = true;
+                window.setTimeout(burst, 300);
+                obs.unobserve(footer);
+            });
+        }, { threshold: 0.5 });
+        obs.observe(footer);
+    }
+
+    const openBtn = document.getElementById("openButton");
+    if (openBtn) {
+        openBtn.addEventListener("click", () => {
+            window.setTimeout(observeFooter, 1400);
+        }, { once: true });
+    }
+    window.setTimeout(observeFooter, 600);
 }

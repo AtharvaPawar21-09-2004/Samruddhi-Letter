@@ -42,22 +42,13 @@
                     <img src="assets/flowers/Lily.png" alt="White lily" class="hero-flower">
                 </div>
 
-                <!-- #5 Animated letter-by-letter title -->
-                <h1 class="hero-title" aria-label="Hello Samruddhi 🌸">
-                    <span class="title-chars" aria-hidden="true">
-                        <span class="tc">H</span><span class="tc">e</span><span class="tc">l</span><span class="tc">l</span><span class="tc">o</span><span class="tc-gap">&nbsp;</span><span class="tc">S</span><span class="tc">a</span><span class="tc">m</span><span class="tc">r</span><span class="tc">u</span><span class="tc">d</span><span class="tc">d</span><span class="tc">h</span><span class="tc">i</span>
-                    </span>
-                    <span class="hero-title-bloom">🌸</span>
-                </h1>
+                <!-- Title -->
+                <h1 class="hero-title" aria-label="Hello Samruddhi 🌸">Hello Samruddhi 🌸</h1>
                 <p class="hero-subtitle">A small message from Atharva</p>
                 <button class="cta-button" id="openButton" type="button">
                     <span class="button-text">Open When You're Ready 💌</span>
                 </button>
 
-                <!-- #4 Petal rain secret button -->
-                <button class="petal-rain-btn" id="petalRainBtn" type="button" aria-label="Shower petals" title="✨">
-                    🌸
-                </button>
             </div>
         </section>
 
@@ -98,11 +89,11 @@
 
                         <p class="letter-paragraph reveal">To be honest, I spent much more time overthinking whether I should write this letter than actually writing it. But I felt that being honest was better than wondering "what if" years later.</p>
 
-                        <p class="letter-paragraph reveal">You may remember that I once asked about giving you a gift. The truth is that it was only meant as a small gesture of appreciation. I had thought of giving you lilies because I felt they suited your personality, along with a simple photo frame as a memory. But I completely respect your decision and understand your preference about accepting gifts.</p>
+                        <!-- <p class="letter-paragraph reveal">You may remember that I once asked about giving you a gift. The truth is that it was only meant as a small gesture of appreciation. I had thought of giving you lilies because I felt they suited your personality, along with a simple photo frame as a memory. But I completely respect your decision and understand your preference about accepting gifts.</p>
 
                         <p class="letter-paragraph reveal">And one small note.</p>
 
-                        <p class="letter-paragraph reveal">The flower theme wasn't random. I remembered that you like flowers, so I ended up designing the entire website around them.</p>
+                        <p class="letter-paragraph reveal">The flower theme wasn't random. I remembered that you like flowers, so I ended up designing the entire website around them.</p> -->
 
                         <p class="letter-paragraph reveal" id="finalChapterParagraph">And before this letter ends, I just want to say that I completely respect whatever you think about it. My intention was never to create pressure or expect anything in return. I simply wanted to be honest and express my appreciation for someone who became a meaningful part of my college journey.</p>
 
@@ -119,6 +110,114 @@
                                 <i></i><i></i><i></i>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- ══ CLOSING MOMENT ══ -->
+
+                    <!-- #2 Section petals — deliberate slow drift -->
+                    <div class="section-petals" id="sectionPetals" aria-hidden="true">
+                        <span class="sp"></span><span class="sp"></span>
+                        <span class="sp"></span><span class="sp"></span>
+                        <span class="sp"></span><span class="sp"></span>
+                        <span class="sp"></span><span class="sp"></span>
+                        <span class="sp"></span><span class="sp"></span>
+                    </div>
+
+                    <!-- #1 Blooming Lily SVG -->
+                    <div class="bloom-lily-scene reveal" id="bloomLilyScene" aria-hidden="true">
+                        <svg class="bloom-lily-svg" viewBox="0 0 160 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- stem -->
+                            <line class="bl-stem" x1="80" y1="195" x2="80" y2="110" stroke="#87977f" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- leaves -->
+                            <path class="bl-leaf bl-leaf-l" d="M80 155 Q55 140 50 120 Q68 128 80 155" fill="#a8bb9a" opacity="0"/>
+                            <path class="bl-leaf bl-leaf-r" d="M80 145 Q105 132 110 112 Q92 122 80 145" fill="#a8bb9a" opacity="0"/>
+                            <!-- petals — 6 around centre, drawn closed then open -->
+                            <g class="bl-petals" transform-origin="80 90">
+                                <ellipse class="bl-petal" cx="80" cy="62" rx="10" ry="28" fill="url(#lpg1)" transform-origin="80px 90px" opacity="0"/>
+                                <ellipse class="bl-petal" cx="80" cy="62" rx="10" ry="28" fill="url(#lpg2)" transform-origin="80px 90px" transform="rotate(60,80,90)"  opacity="0"/>
+                                <ellipse class="bl-petal" cx="80" cy="62" rx="10" ry="28" fill="url(#lpg1)" transform-origin="80px 90px" transform="rotate(120,80,90)" opacity="0"/>
+                                <ellipse class="bl-petal" cx="80" cy="62" rx="10" ry="28" fill="url(#lpg2)" transform-origin="80px 90px" transform="rotate(180,80,90)" opacity="0"/>
+                                <ellipse class="bl-petal" cx="80" cy="62" rx="10" ry="28" fill="url(#lpg1)" transform-origin="80px 90px" transform="rotate(240,80,90)" opacity="0"/>
+                                <ellipse class="bl-petal" cx="80" cy="62" rx="10" ry="28" fill="url(#lpg2)" transform-origin="80px 90px" transform="rotate(300,80,90)" opacity="0"/>
+                            </g>
+                            <!-- centre -->
+                            <circle class="bl-centre" cx="80" cy="90" r="10" fill="#fde9c0" opacity="0"/>
+                            <!-- stamen dots -->
+                            <circle class="bl-stamen" cx="80" cy="82" r="2.5" fill="#e8a050" opacity="0"/>
+                            <circle class="bl-stamen" cx="73" cy="87" r="2" fill="#e8a050" opacity="0"/>
+                            <circle class="bl-stamen" cx="87" cy="87" r="2" fill="#e8a050" opacity="0"/>
+                            <!-- glow halo -->
+                            <circle class="bl-glow" cx="80" cy="90" r="34" fill="rgba(247,215,220,0.18)" opacity="0"/>
+                            <defs>
+                                <linearGradient id="lpg1" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%"   stop-color="#fff8f8"/>
+                                    <stop offset="55%"  stop-color="#f9dde0"/>
+                                    <stop offset="100%" stop-color="#e8b0bc"/>
+                                </linearGradient>
+                                <linearGradient id="lpg2" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%"   stop-color="#fff"/>
+                                    <stop offset="55%"  stop-color="#fce8ed"/>
+                                    <stop offset="100%" stop-color="#dda0b0"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    <!-- #3 Handwritten closing line -->
+                    <div class="handwritten-line reveal" id="handwrittenLine" aria-label="Some people leave a mark that time cannot erase">
+                        <p class="hw-text">Some people leave a mark that time cannot erase.</p>
+                        <div class="hw-underline"></div>
+                    </div>
+
+                    <!-- #7 Written with care row -->
+                    <div class="care-row reveal" id="careRow">
+                        <span class="care-item"><span class="care-icon">🌸</span> care</span>
+                        <span class="care-dot">·</span>
+                        <span class="care-item"><span class="care-icon">💛</span> honesty</span>
+                        <span class="care-dot">·</span>
+                        <span class="care-item"><span class="care-icon">🌿</span> gratitude</span>
+                    </div>
+
+                    <!-- #3 Wax Seal -->
+                    <div class="wax-seal-wrapper reveal" id="waxSealWrapper" aria-label="Letter sealed with love">
+                        <div class="wax-seal" id="waxSeal">
+                            <!-- Outer ring -->
+                            <svg class="ws-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <!-- wax circle -->
+                                <circle cx="60" cy="60" r="56" fill="url(#waxGrad)" filter="url(#waxShadow)"/>
+                                <!-- outer ring detail -->
+                                <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+                                <circle cx="60" cy="60" r="44" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                                <!-- lily petals impressed into seal -->
+                                <g opacity="0.72">
+                                    <ellipse cx="60" cy="36" rx="5" ry="13" fill="rgba(255,255,255,0.22)" transform-origin="60px 60px"/>
+                                    <ellipse cx="60" cy="36" rx="5" ry="13" fill="rgba(255,255,255,0.22)" transform-origin="60px 60px" transform="rotate(60,60,60)"/>
+                                    <ellipse cx="60" cy="36" rx="5" ry="13" fill="rgba(255,255,255,0.22)" transform-origin="60px 60px" transform="rotate(120,60,60)"/>
+                                    <ellipse cx="60" cy="36" rx="5" ry="13" fill="rgba(255,255,255,0.22)" transform-origin="60px 60px" transform="rotate(180,60,60)"/>
+                                    <ellipse cx="60" cy="36" rx="5" ry="13" fill="rgba(255,255,255,0.22)" transform-origin="60px 60px" transform="rotate(240,60,60)"/>
+                                    <ellipse cx="60" cy="36" rx="5" ry="13" fill="rgba(255,255,255,0.22)" transform-origin="60px 60px" transform="rotate(300,60,60)"/>
+                                    <!-- centre dot -->
+                                    <circle cx="60" cy="60" r="7" fill="rgba(255,255,255,0.28)"/>
+                                </g>
+                                <!-- initial A -->
+                                <text x="60" y="67" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif"
+                                      font-size="26" font-weight="600" fill="rgba(255,255,255,0.85)"
+                                      letter-spacing="0">A</text>
+                                <defs>
+                                    <radialGradient id="waxGrad" cx="40%" cy="35%" r="65%">
+                                        <stop offset="0%"   stop-color="#c0455a"/>
+                                        <stop offset="55%"  stop-color="#9b2a40"/>
+                                        <stop offset="100%" stop-color="#6e1a2c"/>
+                                    </radialGradient>
+                                    <filter id="waxShadow" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="rgba(80,10,20,0.35)"/>
+                                    </filter>
+                                </defs>
+                            </svg>
+                            <!-- Shine overlay -->
+                            <div class="ws-shine"></div>
+                        </div>
+                        <p class="ws-caption">Sealed with sincerity</p>
                     </div>
 
                     <section class="music-section reveal" aria-label="Optional music">
@@ -181,7 +280,7 @@
                         </div>
 
                         <audio id="audioPlayer" preload="metadata">
-                            <source src="assets/Iktara.mp3" type="audio/mpeg">
+                            <source src="assets/u.mp3" type="audio/mpeg">
                         </audio>
                     </section>
 
@@ -244,7 +343,9 @@
                     </section>
                 </article>
 
-                <footer class="letter-footer">
+                <footer class="letter-footer" id="letterFooter">
+                    <!-- Confetti layer -->
+                    <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
                     <!-- #7 Footer flower garden -->
                     <div class="footer-garden" aria-hidden="true">
                         <span class="fg">🌱</span>

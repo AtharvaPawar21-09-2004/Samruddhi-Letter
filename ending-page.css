@@ -18,13 +18,21 @@ html, body {
     inset: 0;
     z-index: 0;
     background: linear-gradient(180deg, #fffaf2 0%, #fde8d0 55%, #fbe0d8 100%);
-    transition: background 5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background 7s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: background;
 }
 
 #endingSky.phase-golden {
     background: linear-gradient(180deg,
         #ffe9a8 0%, #ffcb60 30%, #ff9640 65%, #c84e48 100%);
+}
+#endingSky.phase-amber {
+    background: linear-gradient(180deg,
+        #ffb347 0%, #ff8c00 25%, #e05c20 55%, #8b2500 100%);
+}
+#endingSky.phase-sunset {
+    background: linear-gradient(180deg,
+        #ff6030 0%, #ff3d00 22%, #c0204a 52%, #6a0a3a 100%);
 }
 #endingSky.phase-evening {
     background: linear-gradient(180deg,
@@ -33,6 +41,10 @@ html, body {
 #endingSky.phase-twilight {
     background: linear-gradient(180deg,
         #2a1248 0%, #5a1f60 28%, #a03060 58%, #d06050 100%);
+}
+#endingSky.phase-indigo {
+    background: linear-gradient(180deg,
+        #0a0820 0%, #1a1050 28%, #2a1870 55%, #180830 100%);
 }
 #endingSky.phase-night {
     background: linear-gradient(180deg,

@@ -29,13 +29,16 @@ function init() {
     EP.running   = true;
     EP.rafId     = requestAnimationFrame(loop);
 
-    // Sky timeline
+    // Sky timeline — 7 phases across 55 seconds
     const sky = document.getElementById('endingSky');
-    setTimeout(() => sky.classList.add('phase-golden'),    1000);
-    setTimeout(() => sky.classList.add('phase-evening'),   4200);
-    setTimeout(() => sky.classList.add('phase-twilight'),  7800);
-    setTimeout(() => sky.classList.add('phase-night'),    12000);
-    setTimeout(() => document.getElementById('endingAurora').classList.add('aurora-visible'), 13500);
+    setTimeout(() => sky.classList.add('phase-golden'),    1000);   //  1s — warm golden sunrise
+    setTimeout(() => sky.classList.add('phase-amber'),     9000);   //  9s — amber afternoon glow
+    setTimeout(() => sky.classList.add('phase-sunset'),   17000);   // 17s — fiery orange sunset
+    setTimeout(() => sky.classList.add('phase-evening'),  25000);   // 25s — soft orange-pink evening
+    setTimeout(() => sky.classList.add('phase-twilight'), 34000);   // 34s — purple twilight
+    setTimeout(() => sky.classList.add('phase-indigo'),   43000);   // 43s — deep indigo dusk
+    setTimeout(() => sky.classList.add('phase-night'),    52000);   // 52s — starry night
+    setTimeout(() => document.getElementById('endingAurora').classList.add('aurora-visible'), 54000);
 
     // Fireworks
     setTimeout(startFireworks, 1800);

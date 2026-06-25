@@ -12,14 +12,16 @@ const ES = {
 
 function endingInit(){
     buildDOM();
-    ES.canvas=document.getElementById('endingCanvas');
-    ES.ctx=ES.canvas.getContext('2d');
-    resizeCanvas();
+    // Don't grab canvas here — grab it fresh in startEnding when overlay is visible
     window.addEventListener('resize',resizeCanvas,{passive:true});
-    document.getElementById('endingLaunchBtn')?.addEventListener('click',onLaunchClick);
-    document.getElementById('endingClose')?.addEventListener('click',onEndingClose);
+    // Use event delegation so the button works even before the letter section is visible
+    document.body.addEventListener('click',function(e){
+        if(e.target.closest('#endingLaunchBtn'))onLaunchClick(e);
+        if(e.target.closest('#endingClose'))onEndingClose();
+    });
 }
 function resizeCanvas(){
+    if(!ES.canvas)return;
     ES.W=ES.canvas.width=window.innerWidth;
     ES.H=ES.canvas.height=window.innerHeight;
 }
@@ -49,7 +51,7 @@ function buildDOM(){
 
 function onLaunchClick(e){
     if(ES.running)return; ES.running=true;
-    const btn=e.currentTarget;
+    const btn=e.target.closest('#endingLaunchBtn');
     const rip=document.createElement('span'); rip.className='btn-ripple';
     const rc=btn.getBoundingClientRect(),sz=Math.max(rc.width,rc.height)*2;
     rip.style.cssText=`width:${sz}px;height:${sz}px;left:${e.clientX-rc.left}px;top:${e.clientY-rc.top}px`;
@@ -81,8 +83,12 @@ function startEnding(){
     const ov=document.getElementById('endingOverlay');
     ov.classList.add('ending-active');
     ov.style.opacity='0'; ov.style.transition='opacity 1.5s ease';
+    // Grab canvas fresh now that overlay is in DOM and visible
+    ES.canvas=document.getElementById('endingCanvas');
+    ES.ctx=ES.canvas.getContext('2d');
+    resizeCanvas();
     requestAnimationFrame(()=>{ov.style.opacity='1';});
-    resizeCanvas(); startAudio();
+    startAudio();
     initStars(); initParticles(); initFlowers();
     ES.fireworks=[]; ES.butterflies=[];
     ES.startTime=performance.now();
@@ -256,6 +262,8 @@ function onEndingClose(){
         document.getElementById('endingSky')?.className='';
         document.getElementById('endingAurora')?.classList.remove('aurora-visible');
         document.getElementById('endingClose')?.classList.remove('close-visible');
+        document.getElementById('endingLaunchBtn')?.classList.remove('btn-used');
+        ES.canvas=null; ES.ctx=null;
         ES.running=false;
     },1050);
 }

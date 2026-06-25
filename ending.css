@@ -184,8 +184,16 @@
     text-align: center;
     padding: 2rem 1.5rem;
     max-width: min(90vw, 44rem);
-    /* always visible — children handle their own opacity */
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+    pointer-events: none;
+}
+
+#endingContent.content-visible {
     opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 
 /* ── Heading ── */

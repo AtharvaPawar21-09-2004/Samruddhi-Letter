@@ -70,7 +70,18 @@ function startAudio() {
     if (!EP.audio) return;
     EP.audio.volume = 0;
     EP.audio.play().then(() => fadeAudioTo(0.82, 3200)).catch(() => {
-        // Autoplay blocked — user interaction required; page still looks great
+        // Autoplay blocked — page still looks great; flowers keep floating
+    });
+
+    // When song ends — stop fireworks, keep flowers/particles floating peacefully
+    EP.audio.addEventListener('ended', () => {
+        // Stop launching new fireworks
+        EP.running = false;
+        clearTimeout(EP.fwTimer);
+        // Flowers, particles, butterflies, stars keep looping forever via rafId
+        // Slow the flowers down gently for a calm final atmosphere
+        EP.flowers.forEach(f => { f.vy *= 0.55; f.vx *= 0.55; f.sa *= 0.55; });
+        EP.particles.forEach(p => { p.vy *= 0.6; p.vx *= 0.6; });
     });
 }
 
@@ -175,10 +186,18 @@ function initFlowers() {
 
 function drawFlowers(ctx, el) {
     const t = el / 1000;
+    // After song ends (EP.running=false), slow multiplier for peaceful drift
+    const speedMult = EP.running ? 1.0 : 0.5;
     for (const f of EP.flowers) {
-        f.x += f.vx + Math.sin(t * 0.55 + f.sw) * f.sa;
-        f.y += f.vy; f.rot += f.rs;
-        if (f.y > EP.H + 50) { const n = mkFlower(); Object.assign(f, n); }
+        f.x += (f.vx + Math.sin(t * 0.55 + f.sw) * f.sa) * speedMult;
+        f.y += f.vy * speedMult;
+        f.rot += f.rs * speedMult;
+        if (f.y > EP.H + 50) {
+            const n = mkFlower();
+            Object.assign(f, n);
+            // Keep slow speed after song ends
+            if (!EP.running) { f.vy *= 0.5; f.vx *= 0.5; f.sa *= 0.5; }
+        }
         if (f.x < -60) f.x = EP.W + 40;
         if (f.x > EP.W + 60) f.x = -40;
         ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.rot); ctx.globalAlpha = f.op;

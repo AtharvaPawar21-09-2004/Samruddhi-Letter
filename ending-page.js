@@ -76,9 +76,15 @@ function startAudio() {
         // Autoplay blocked — page still looks great; flowers keep floating
     });
 
-    // When song ends — trigger the full cinematic ending sequence
-    EP.audio.addEventListener('ended', () => {
-        startCinematicEnding();
+    // Trigger cinematic ending at 90% playback — runs exactly once
+    let endingTriggered = false;
+    EP.audio.addEventListener('timeupdate', () => {
+        if (endingTriggered) return;
+        if (!EP.audio.duration || EP.audio.duration === Infinity) return;
+        if (EP.audio.currentTime >= EP.audio.duration * 0.90) {
+            endingTriggered = true;
+            startCinematicEnding();
+        }
     });
 }
 
@@ -383,92 +389,98 @@ if (document.readyState === 'loading') {
 
 /* ══════════════════════════════════════════════════════════════
    CINEMATIC ENDING SEQUENCE
-   Triggered when the song ends.
+   Triggered at 90% audio playback — music continues underneath.
    ══════════════════════════════════════════════════════════════ */
 function startCinematicEnding() {
 
-    // ── Step 1 (0s): Stop new fireworks, slow flowers & particles ──
+    // ── 0s: Fireworks stop, flowers & particles soften ──
     EP.running = false;
     clearTimeout(EP.fwTimer);
-    EP.flowers.forEach(f  => { f.vy *= 0.55; f.vx *= 0.55; f.sa *= 0.55; });
-    EP.particles.forEach(p => { p.vy *= 0.60; p.vx *= 0.60; });
+    EP.flowers.forEach(f   => { f.vy *= 0.60; f.vx *= 0.60; f.sa *= 0.60; });
+    EP.particles.forEach(p => { p.vy *= 0.65; p.vx *= 0.65; });
 
-    // Hide the close button — no interaction from here
+    // Hide close button — no interaction from here
     const closeBtn = document.getElementById('endingClose');
-    if (closeBtn) { closeBtn.style.transition = 'opacity 1s ease'; closeBtn.style.opacity = '0'; }
+    if (closeBtn) {
+        closeBtn.style.transition = 'opacity 1.2s ease';
+        closeBtn.style.opacity = '0';
+        closeBtn.style.pointerEvents = 'none';
+    }
 
-    // ── Step 2 (1.5s): Darken the background slightly ──
+    // ── 1.5s: Background dims, aurora fades ──
     setTimeout(() => {
         const sky = document.getElementById('endingSky');
-        if (sky) {
-            sky.style.transition = 'opacity 2.5s ease';
-            sky.style.opacity = '0.35';
-        }
-        // Fade out remaining canvas content
-        EP.canvas.style.transition = 'opacity 2.5s ease';
-        EP.canvas.style.opacity = '0.35';
+        const aurora = document.getElementById('endingAurora');
+        if (sky)    { sky.style.transition    = 'opacity 2.8s ease'; sky.style.opacity    = '0.3'; }
+        if (aurora) { aurora.style.transition = 'opacity 2.5s ease'; aurora.style.opacity = '0';   }
+        EP.canvas.style.transition = 'opacity 2.8s ease';
+        EP.canvas.style.opacity    = '0.4';
     }, 1500);
 
-    // ── Step 3 (3.5s): Close the curtains ──
+    // ── 3s: Velvet curtains begin closing — music still playing ──
     setTimeout(() => {
         const L = document.getElementById('curtainLeft');
         const R = document.getElementById('curtainRight');
         if (L) L.classList.add('curtain-close');
         if (R) R.classList.add('curtain-close');
-    }, 3500);
+    }, 3000);
 
-    // ── Step 4 (7.5s): Curtains fully closed — fade everything behind to black ──
+    // ── 7s: Curtains fully closed — gently fade audio to silence ──
+    setTimeout(() => {
+        // Audio fades out over ~1s matching the final note
+        fadeAudioTo(0, 1200);
+    }, 7000);
+
+    // ── 8s: Everything behind curtains fades to black ──
     setTimeout(() => {
         cancelAnimationFrame(EP.rafId);
-        EP.canvas.style.transition  = 'opacity 1s ease';
-        EP.canvas.style.opacity     = '0';
-        const sky = document.getElementById('endingSky');
-        const inner = document.getElementById('endingInner');
-        const aurora = document.getElementById('endingAurora');
+        EP.canvas.style.transition = 'opacity 1s ease'; EP.canvas.style.opacity = '0';
+        const sky    = document.getElementById('endingSky');
+        const inner  = document.getElementById('endingInner');
         const clouds = document.getElementById('endingClouds');
-        [sky, inner, aurora, clouds].forEach(el => {
+        [sky, inner, clouds].forEach(el => {
             if (el) { el.style.transition = 'opacity 1s ease'; el.style.opacity = '0'; }
         });
-    }, 7500);
+    }, 8000);
 
-    // ── Step 5 (8.5s): Credits screen fades in (black bg) ──
+    // ── 9s: Black credits screen fades in ──
     setTimeout(() => {
         const screen = document.getElementById('creditsScreen');
         if (screen) screen.classList.add('credits-bg-visible');
-
-        // Init credits canvas (tiny gold particles)
         initCreditsCanvas();
-    }, 8500);
+    }, 9000);
 
-    // ── Step 6 (9.5s): "Made with Gratitude." ──
-    setTimeout(() => {
-        showCreditBlock('creditBlock1');
-    }, 9500);
+    // ── 9s: "Made with Gratitude." ──
+    setTimeout(() => showCreditBlock('creditBlock1'), 9000);
 
-    // ── Step 7 (12.5s): Hide block 1 ──
-    setTimeout(() => hideCreditBlock('creditBlock1'), 12500);
+    // ── 12s: Hide block 1 ──
+    setTimeout(() => hideCreditBlock('creditBlock1'), 12000);
 
-    // ── Step 8 (14s): "Designed & Created by / Atharva Pawar" ──
-    setTimeout(() => showCreditBlock('creditBlock2'), 14000);
+    // ── 13.5s: "Designed & Created by / Atharva Pawar" ──
+    setTimeout(() => showCreditBlock('creditBlock2'), 13500);
 
-    // ── Step 9 (18s): Hide block 2 ──
-    setTimeout(() => hideCreditBlock('creditBlock2'), 18000);
+    // ── 17.5s: Hide block 2 ──
+    setTimeout(() => hideCreditBlock('creditBlock2'), 17500);
 
-    // ── Step 10 (19.5s): "BE Computer Engineering / Class of 2026" ──
-    setTimeout(() => showCreditBlock('creditBlock3'), 19500);
+    // ── 19s: "BE Computer Engineering / Class of 2026" ──
+    setTimeout(() => showCreditBlock('creditBlock3'), 19000);
 
-    // ── Step 11 (24s): Final fade to black ──
+    // ── 23s: Final fade — credits canvas dims ──
     setTimeout(() => {
         hideCreditBlock('creditBlock3');
         const cc = document.getElementById('creditsCanvas');
         if (cc) { cc.style.transition = 'opacity 3s ease'; cc.style.opacity = '0'; }
-    }, 24000);
+    }, 23000);
 
-    // ── Step 12 (27s): Total blackout ──
+    // ── 26s: Total blackout ──
     setTimeout(() => {
+        cancelAnimationFrame(CC.rafId);
         const screen = document.getElementById('creditsScreen');
-        if (screen) { screen.style.transition = 'opacity 2.5s ease'; screen.style.background = '#000'; }
-    }, 27000);
+        if (screen) {
+            screen.style.transition = 'background 1s ease';
+            screen.style.background = '#000';
+        }
+    }, 26000);
 }
 
 function showCreditBlock(id) {

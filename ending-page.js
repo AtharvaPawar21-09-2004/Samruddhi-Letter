@@ -337,48 +337,8 @@ function revealText() {
     show('ep4',   5000);
     show('ep5',   6100);
     show('ediv2', 7100);
-
-    // Handwritten signature
-    setTimeout(() => {
-        const svg  = document.getElementById('endingSignatureSvg');
-        const path = document.getElementById('sigPath');
-        if (!svg || !path) return;
-        svg.classList.add('sig-visible');
-        setTimeout(() => { path.classList.add('sig-draw'); setTimeout(sigSparkle, 3000); }, 300);
-    }, 8200);
-
-    show('efq', 12000);
+    show('efq',  8500);
 }
-
-function sigSparkle() {
-    const svg = document.getElementById('endingSignatureSvg');
-    if (!svg) return;
-    const rc = svg.getBoundingClientRect();
-    ['✦','✧','⋆','✦','✧'].forEach((ch, i) => {
-        setTimeout(() => {
-            const sp = document.createElement('div');
-            sp.style.cssText = `position:fixed;z-index:999;pointer-events:none;
-                font-size:${0.5+Math.random()*0.5}rem;color:#d4af37;
-                left:${rc.right-20+(Math.random()-0.5)*60}px;
-                top:${rc.top+rc.height/2+(Math.random()-0.5)*30}px;
-                animation:sparkleFloat 1s ease-out forwards;`;
-            sp.textContent = ch;
-            document.body.appendChild(sp);
-            setTimeout(() => sp.remove(), 1050);
-        }, i * 120);
-    });
-}
-
-/* ── Sparkle keyframe (injected once) ── */
-(function injectSparkleAnim() {
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes sparkleFloat {
-            0%   { opacity:1; transform:translateY(0) scale(1); }
-            100% { opacity:0; transform:translateY(-2rem) scale(0.5); }
-        }`;
-    document.head.appendChild(style);
-})();
 
 /* ── Bootstrap ── */
 if (document.readyState === 'loading') {

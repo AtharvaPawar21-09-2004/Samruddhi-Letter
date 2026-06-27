@@ -258,31 +258,7 @@ html, body {
 }
 .ending-para.line-visible { opacity: 1; transform: translateY(0); }
 
-/* ── Signature image wrapper ── */
-#endingSignatureSvg {
-    margin: 1.6rem auto 0;
-    display: block;
-    opacity: 0;
-    transition: opacity 1s ease;
-}
-#endingSignatureSvg.sig-visible { opacity: 1; }
-
-.sig-img-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.sig-img {
-    width: clamp(9rem, 38vw, 16rem);
-    height: auto;
-    display: block;
-    /* Blend the grey background of the SVG away */
-    mix-blend-mode: multiply;
-    filter: drop-shadow(0 0 8px rgba(212,175,55,0.5));
-}
-
-/* sigPath draw animation not needed for img — keep stubs so JS doesn't error */
+/* ── sigPath stubs kept so JS doesn't error ── */
 #sigPath { stroke-dasharray: 700; stroke-dashoffset: 0; }
 #sigPath.sig-draw { stroke-dashoffset: 0; }
 

@@ -511,3 +511,285 @@
     .ending-heading { letter-spacing: 0.02em; }
     .ending-para { font-size: 1rem; line-height: 1.85; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   FINAL CHAPTER TRANSITION SECTION
+   ══════════════════════════════════════════════════════════════ */
+
+.final-chapter-section {
+    text-align: center;
+    padding: 4rem 1.5rem 5rem;
+    position: relative;
+}
+
+/* ── Floral Divider ── */
+.final-chapter-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.fcd-line {
+    flex: 1;
+    max-width: 8rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,175,55,0.6), transparent);
+    position: relative;
+}
+
+.fcd-line::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    background: inherit;
+    filter: blur(3px);
+    opacity: 0.6;
+}
+
+.fcd-bloom {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    filter: drop-shadow(0 0 8px rgba(212,175,55,0.5));
+    animation: fcdBloomPulse 3s ease-in-out infinite;
+}
+
+.fcd-bloom span:nth-child(2) {
+    color: #d4af37;
+    font-size: 0.75rem;
+}
+
+@keyframes fcdBloomPulse {
+    0%,100% { filter: drop-shadow(0 0 6px rgba(212,175,55,0.4)); transform: scale(1); }
+    50%      { filter: drop-shadow(0 0 14px rgba(212,175,55,0.7)); transform: scale(1.06); }
+}
+
+/* ── Invitation Lines ── */
+.fcs-line {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(1.05rem, 3.2vw, 1.3rem);
+    line-height: 1.85;
+    color: #5a3a2a;
+    margin: 0 auto 0.5rem;
+    max-width: 38rem;
+}
+
+.fcs-line--sub {
+    font-size: clamp(0.95rem, 2.8vw, 1.1rem);
+    color: #7a5040;
+    font-style: italic;
+}
+
+/* ── Button wrapper ── */
+.fcs-btn-wrap {
+    position: relative;
+    display: inline-block;
+    margin-top: 2.8rem;
+}
+
+/* ── Floating petals ── */
+.fcs-petal {
+    position: absolute;
+    font-size: 1.1rem;
+    pointer-events: none;
+    opacity: 0;
+    animation: fcsOrbit linear infinite;
+    transform-origin: center center;
+}
+
+.fcs-petal--1 { animation-duration: 8s;  animation-delay: 0s;    top: -18px; left: -22px; }
+.fcs-petal--2 { animation-duration: 10s; animation-delay: 1.5s;  top: -14px; right: -20px; }
+.fcs-petal--3 { animation-duration: 7s;  animation-delay: 3s;    bottom: -16px; left: -18px; }
+.fcs-petal--4 { animation-duration: 9s;  animation-delay: 0.8s;  bottom: -12px; right: -22px; }
+.fcs-petal--5 { animation-duration: 11s; animation-delay: 2.2s;  top: 50%; left: -28px; }
+
+@keyframes fcsOrbit {
+    0%   { opacity: 0;    transform: translateY(0px)    rotate(0deg)   scale(0.8); }
+    15%  { opacity: 0.7; }
+    50%  { opacity: 0.5;  transform: translateY(-8px)   rotate(180deg) scale(1.1); }
+    85%  { opacity: 0.6; }
+    100% { opacity: 0;    transform: translateY(0px)    rotate(360deg) scale(0.8); }
+}
+
+/* Petals active when section is revealed */
+.fcs-btn-wrap .fcs-petal { animation-play-state: paused; }
+.fcs-btn-wrap.petals-active .fcs-petal { animation-play-state: running; }
+
+/* ── The Button ── */
+.fcs-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.1rem 3rem;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(1.05rem, 3.5vw, 1.25rem);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: #4a2e1a !important;
+    -webkit-text-fill-color: #4a2e1a !important;
+    text-decoration: none;
+    background: linear-gradient(135deg,
+        rgba(255,252,238,0.95) 0%,
+        rgba(255,255,255,0.88) 45%,
+        rgba(255,248,215,0.95) 100%);
+    border: 1.5px solid rgba(212,175,55,0.6);
+    border-radius: 999px;
+    backdrop-filter: blur(20px) saturate(1.3);
+    -webkit-backdrop-filter: blur(20px) saturate(1.3);
+    box-shadow:
+        0 0.5rem 2rem rgba(212,175,55,0.22),
+        0 0 0 1px rgba(255,255,255,0.6) inset;
+    cursor: pointer;
+    overflow: hidden;
+    transition:
+        transform 380ms cubic-bezier(0.34,1.56,0.64,1),
+        box-shadow 380ms ease,
+        border-color 380ms ease;
+    will-change: transform;
+    /* Breathing animation every 5s */
+    animation: fcsBreath 5s ease-in-out infinite;
+}
+
+/* Rotating gold shimmer border */
+.fcs-btn::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 999px;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0%,
+        rgba(212,175,55,0.75) 18%,
+        rgba(255,240,150,0.55) 32%,
+        rgba(212,175,55,0.75) 48%,
+        transparent 68%);
+    opacity: 0;
+    transition: opacity 400ms ease;
+    animation: fcsSpinBorder 3.5s linear infinite;
+    z-index: 0;
+}
+
+/* Inner glow */
+.fcs-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: radial-gradient(ellipse at 50% 50%,
+        rgba(255,215,100,0.22) 0%, transparent 68%);
+    opacity: 0;
+    transition: opacity 500ms ease;
+    z-index: 0;
+}
+
+.fcs-btn:hover::before { opacity: 1; }
+.fcs-btn:hover::after  { opacity: 1; }
+
+.fcs-btn:hover {
+    transform: translateY(-4px) scale(1.05);
+    border-color: rgba(212,175,55,0.9);
+    box-shadow:
+        0 1.4rem 4rem rgba(212,175,55,0.42),
+        0 0 7rem rgba(212,175,55,0.18),
+        0 0 0 1px rgba(255,255,255,0.75) inset;
+    color: #3a2010 !important;
+    -webkit-text-fill-color: #3a2010 !important;
+    animation: none; /* stop breathing on hover */
+}
+
+.fcs-btn:active {
+    transform: scale(0.97);
+    transition-duration: 100ms;
+}
+
+.fcs-btn-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.fcs-btn-icon {
+    display: inline-block;
+    animation: fcsBtnIconSpin 8s linear infinite;
+    transform-origin: center;
+}
+
+@keyframes fcsBtnIconSpin {
+    0%,100% { transform: rotate(0deg) scale(1); }
+    25%      { transform: rotate(-8deg) scale(1.1); }
+    75%      { transform: rotate(8deg) scale(1.1); }
+}
+
+/* Ripple on click */
+.fcs-btn .fcs-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(212,175,55,0.35);
+    transform: translate(-50%,-50%) scale(0);
+    animation: fcsRipple 700ms cubic-bezier(0.4,0,0.2,1) forwards;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes fcsRipple {
+    to { transform: translate(-50%,-50%) scale(4); opacity: 0; }
+}
+
+/* Breathing pulse every 5s */
+@keyframes fcsBreath {
+    0%,60%,100% {
+        box-shadow: 0 0.5rem 2rem rgba(212,175,55,0.22), 0 0 0 1px rgba(255,255,255,0.6) inset;
+        transform: scale(1);
+    }
+    70% {
+        box-shadow: 0 0.8rem 3rem rgba(212,175,55,0.45), 0 0 4rem rgba(212,175,55,0.2), 0 0 0 1px rgba(255,255,255,0.7) inset;
+        transform: scale(1.025);
+    }
+    80% {
+        box-shadow: 0 0.5rem 2rem rgba(212,175,55,0.22), 0 0 0 1px rgba(255,255,255,0.6) inset;
+        transform: scale(1);
+    }
+}
+
+@keyframes fcsSpinBorder {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Bouncing arrow ── */
+.fcs-arrow {
+    margin-top: 1.4rem;
+    color: rgba(212,175,55,0.65);
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fcsBounce 2.5s ease-in-out infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fcs-arrow svg {
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes fcsBounce {
+    0%,60%,100% { transform: translateY(0); opacity: 0.5; }
+    30%          { transform: translateY(6px); opacity: 0.9; }
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+    .final-chapter-section { padding: 3rem 1rem 4rem; }
+    .fcs-btn { padding: 1.15rem 2.4rem; min-width: 80vw; justify-content: center; }
+    .fcs-line { font-size: 1.05rem; }
+    .fcs-line--sub { font-size: 0.95rem; }
+    .fcs-arrow { margin-top: 1.2rem; }
+}

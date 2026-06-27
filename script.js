@@ -623,6 +623,7 @@ function init() {
 
     els.openButton?.addEventListener("click", openLetter);
     els.closeButton?.addEventListener("click", closeLetter);
+    setupFinalChapterBtn();
 }
 
 if (document.readyState === "loading") {
@@ -1295,4 +1296,77 @@ function setupConfetti() {
         }, { once: true });
     }
     window.setTimeout(observeFooter, 600);
+}
+
+
+// ─────────────────────────────────────────────
+// FINAL CHAPTER BUTTON — ripple, petal burst, petals activation
+// ─────────────────────────────────────────────
+function setupFinalChapterBtn() {
+    const btn  = document.getElementById("endingLaunchBtn");
+    const wrap = document.getElementById("fcsBtnWrap");
+    if (!btn) return;
+
+    // Activate floating petals when section scrolls into view
+    if (wrap) {
+        const petalObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    wrap.classList.add("petals-active");
+                } else {
+                    wrap.classList.remove("petals-active");
+                }
+            });
+        }, { threshold: 0.3 });
+        petalObserver.observe(wrap);
+    }
+
+    // Ripple + petal burst on click
+    btn.addEventListener("click", (e) => {
+        // Ripple
+        const ripple = document.createElement("span");
+        ripple.className = "fcs-ripple";
+        const rc  = btn.getBoundingClientRect();
+        const sz  = Math.max(rc.width, rc.height) * 2.2;
+        ripple.style.cssText = `width:${sz}px;height:${sz}px;left:${e.clientX - rc.left}px;top:${e.clientY - rc.top}px`;
+        btn.appendChild(ripple);
+        window.setTimeout(() => ripple.remove(), 750);
+
+        // Petal burst from button centre
+        if (!prefersReducedMotion) {
+            const cx = rc.left + rc.width  / 2;
+            const cy = rc.top  + rc.height / 2;
+            const emojis = ["🌸", "🌷", "🌺", "🌼", "✦"];
+            for (let i = 0; i < 10; i++) {
+                window.setTimeout(() => {
+                    const p   = document.createElement("div");
+                    const ang = (i / 10) * Math.PI * 2 + Math.random() * 0.5;
+                    const dst = 40 + Math.random() * 70;
+                    p.style.cssText = `
+                        position:fixed; z-index:9999; pointer-events:none;
+                        font-size:${0.9 + Math.random() * 0.7}rem;
+                        left:${cx}px; top:${cy}px;
+                        transform:translate(-50%,-50%);
+                        animation: fcsBurst 800ms ease-out forwards;
+                        --bx:${Math.cos(ang) * dst}px;
+                        --by:${Math.sin(ang) * dst - 30}px;`;
+                    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    document.body.appendChild(p);
+                    window.setTimeout(() => p.remove(), 850);
+                }, i * 40);
+            }
+        }
+    });
+
+    // Inject burst keyframe once
+    if (!document.getElementById("fcsBurstStyle")) {
+        const s = document.createElement("style");
+        s.id = "fcsBurstStyle";
+        s.textContent = `
+            @keyframes fcsBurst {
+                0%   { opacity:1; transform:translate(-50%,-50%) translate(0,0) scale(1); }
+                100% { opacity:0; transform:translate(-50%,-50%) translate(var(--bx),var(--by)) scale(0.4); }
+            }`;
+        document.head.appendChild(s);
+    }
 }

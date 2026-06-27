@@ -100,6 +100,46 @@
     <!-- Skip / go back button -->
     <button id="endingClose" aria-label="Go back to letter" title="Back to letter">✕</button>
 
+    <!-- ══ CINEMATIC CURTAIN + CREDITS ══ -->
+    <div id="curtainStage">
+        <!-- Left curtain -->
+        <div id="curtainLeft">
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-border"></div>
+        </div>
+        <!-- Right curtain -->
+        <div id="curtainRight">
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-fold"></div>
+            <div class="curtain-border"></div>
+        </div>
+    </div>
+
+    <!-- Credits canvas (tiny gold particles behind credits) -->
+    <canvas id="creditsCanvas"></canvas>
+
+    <!-- Credits screen -->
+    <div id="creditsScreen">
+        <div class="credits-block" id="creditBlock1">
+            <p class="credits-made">Made with Gratitude.</p>
+        </div>
+        <div class="credits-block" id="creditBlock2">
+            <p class="credits-by">Designed &amp; Created by</p>
+            <p class="credits-name">Atharva Pawar</p>
+        </div>
+        <div class="credits-block" id="creditBlock3">
+            <p class="credits-dept">BE Computer Engineering</p>
+            <p class="credits-year">Class of 2026</p>
+        </div>
+    </div>
+
     <script src="ending-page.js"></script>
 </body>
 </html>

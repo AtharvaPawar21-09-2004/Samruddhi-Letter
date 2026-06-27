@@ -332,3 +332,238 @@ html, body {
     .ending-heading { letter-spacing: 0.02em; }
     .ending-para { line-height: 1.85; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   CINEMATIC CURTAIN SEQUENCE
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Stage wrapper ── */
+#curtainStage {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* ── Shared curtain base ── */
+#curtainLeft,
+#curtainRight {
+    position: absolute;
+    top: 0;
+    width: 55%;        /* slightly over half so they overlap in centre */
+    height: 100%;
+    /* Deep maroon velvet base */
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(0,0,0,0.18) 0px,
+            rgba(0,0,0,0)    8px,
+            rgba(255,255,255,0.04) 14px,
+            rgba(0,0,0,0)    22px,
+            rgba(0,0,0,0.12) 30px
+        ),
+        linear-gradient(180deg,
+            #4a0a12 0%, #6b1020 18%, #8b1a2a 40%,
+            #7a1420 60%, #5a0e1a 80%, #3a0810 100%);
+    will-change: transform;
+    overflow: hidden;
+}
+
+/* Left starts off-screen to the left */
+#curtainLeft  { left: 0;  transform: translateX(-110%); }
+/* Right starts off-screen to the right */
+#curtainRight { right: 0; transform: translateX(110%); }
+
+/* ── Fabric folds (vertical light/shadow strips) ── */
+.curtain-fold {
+    position: absolute;
+    top: 0;
+    width: 18%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Left curtain folds */
+#curtainLeft .curtain-fold:nth-child(1) { left: 4%;  background: linear-gradient(90deg, rgba(0,0,0,0.3) 0%, rgba(255,255,255,0.06) 50%, rgba(0,0,0,0.25) 100%); }
+#curtainLeft .curtain-fold:nth-child(2) { left: 20%; background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, rgba(255,200,180,0.05) 50%, rgba(0,0,0,0.2) 100%); }
+#curtainLeft .curtain-fold:nth-child(3) { left: 36%; background: linear-gradient(90deg, rgba(0,0,0,0.25) 0%, rgba(255,255,255,0.04) 50%, rgba(0,0,0,0.2) 100%); }
+#curtainLeft .curtain-fold:nth-child(4) { left: 52%; background: linear-gradient(90deg, rgba(0,0,0,0.18) 0%, rgba(255,200,160,0.04) 50%, rgba(0,0,0,0.18) 100%); }
+#curtainLeft .curtain-fold:nth-child(5) { left: 68%; background: linear-gradient(90deg, rgba(0,0,0,0.22) 0%, rgba(255,255,255,0.05) 50%, rgba(0,0,0,0.15) 100%); }
+
+/* Right curtain folds (mirrored) */
+#curtainRight .curtain-fold:nth-child(1) { right: 4%;  background: linear-gradient(270deg, rgba(0,0,0,0.3) 0%, rgba(255,255,255,0.06) 50%, rgba(0,0,0,0.25) 100%); }
+#curtainRight .curtain-fold:nth-child(2) { right: 20%; background: linear-gradient(270deg, rgba(0,0,0,0.2) 0%, rgba(255,200,180,0.05) 50%, rgba(0,0,0,0.2) 100%); }
+#curtainRight .curtain-fold:nth-child(3) { right: 36%; background: linear-gradient(270deg, rgba(0,0,0,0.25) 0%, rgba(255,255,255,0.04) 50%, rgba(0,0,0,0.2) 100%); }
+#curtainRight .curtain-fold:nth-child(4) { right: 52%; background: linear-gradient(270deg, rgba(0,0,0,0.18) 0%, rgba(255,200,160,0.04) 50%, rgba(0,0,0,0.18) 100%); }
+#curtainRight .curtain-fold:nth-child(5) { right: 68%; background: linear-gradient(270deg, rgba(0,0,0,0.22) 0%, rgba(255,255,255,0.05) 50%, rgba(0,0,0,0.15) 100%); }
+
+/* ── Gold border strip on inner edge ── */
+.curtain-border {
+    position: absolute;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(180deg,
+        #c8a040 0%, #f0d060 15%, #d4af37 35%,
+        #fff0a0 50%, #d4af37 65%, #f0d060 85%, #c8a040 100%);
+    box-shadow:
+        0 0 18px rgba(212,175,55,0.7),
+        0 0 40px rgba(212,175,55,0.35);
+}
+#curtainLeft  .curtain-border { right: 0; }
+#curtainRight .curtain-border { left:  0; }
+
+/* ── Curtain top valance shadow ── */
+#curtainLeft::after,
+#curtainRight::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.45) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+/* ── Curtain OPEN state (starting position) ── */
+/* No class = hidden off-screen. JS adds .curtain-close to animate in */
+
+/* ── Curtain close animation ── */
+#curtainLeft.curtain-close {
+    animation: curtainCloseLeft 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+#curtainRight.curtain-close {
+    animation: curtainCloseRight 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes curtainCloseLeft {
+    0%   { transform: translateX(-110%); }
+    100% { transform: translateX(0%); }
+}
+@keyframes curtainCloseRight {
+    0%   { transform: translateX(110%); }
+    100% { transform: translateX(0%); }
+}
+
+/* Subtle fabric sway while closing */
+#curtainLeft.curtain-close  .curtain-fold { animation: fabricSway 0.9s ease-in-out infinite alternate; }
+#curtainRight.curtain-close .curtain-fold { animation: fabricSway 0.9s ease-in-out infinite alternate-reverse; }
+
+@keyframes fabricSway {
+    0%   { opacity: 0.85; transform: scaleX(1); }
+    100% { opacity: 1;    transform: scaleX(1.03); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CREDITS CANVAS (tiny particles behind credits)
+   ══════════════════════════════════════════════════════════════ */
+#creditsCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 300;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+#creditsCanvas.credits-visible { opacity: 1; }
+
+/* ══════════════════════════════════════════════════════════════
+   CREDITS SCREEN
+   ══════════════════════════════════════════════════════════════ */
+#creditsScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.6s ease;
+}
+#creditsScreen.credits-bg-visible { opacity: 1; }
+
+/* ── Each credit block ── */
+.credits-block {
+    position: absolute;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 1.6s cubic-bezier(0.2,0.8,0.2,1),
+                transform 1.6s cubic-bezier(0.2,0.8,0.2,1);
+    pointer-events: none;
+    width: 100%;
+    padding: 0 2rem;
+}
+.credits-block.credits-show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.credits-block.credits-hide {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+/* ── "Made with Gratitude." ── */
+.credits-made {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(1.8rem, 6vw, 3.4rem);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: rgba(255,245,215,0.92);
+    text-shadow:
+        0 0 3rem rgba(212,175,55,0.3),
+        0 0 8rem rgba(212,175,55,0.12);
+}
+
+/* ── "Designed & Created by" ── */
+.credits-by {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(0.85rem, 2.8vw, 1.05rem);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(212,175,55,0.6);
+    margin-bottom: 0.7rem;
+}
+
+/* ── "Atharva Pawar" ── */
+.credits-name {
+    font-family: "Dancing Script", cursive;
+    font-size: clamp(2.8rem, 9vw, 5.5rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    background: linear-gradient(135deg,
+        #c8a030 0%, #f0d060 28%, #fff0a0 50%, #d4af37 72%, #f0d060 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 2rem rgba(212,175,55,0.55))
+            drop-shadow(0 0 6rem rgba(212,175,55,0.25));
+    line-height: 1.2;
+}
+
+/* ── "BE Computer Engineering" ── */
+.credits-dept {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(0.9rem, 3vw, 1.15rem);
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    color: rgba(255,245,210,0.65);
+    margin-bottom: 0.5rem;
+}
+
+/* ── "Class of 2026" ── */
+.credits-year {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(0.78rem, 2.4vw, 0.95rem);
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    color: rgba(212,175,55,0.45);
+    text-transform: uppercase;
+}

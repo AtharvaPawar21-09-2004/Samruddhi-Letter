@@ -76,15 +76,9 @@ function startAudio() {
         // Autoplay blocked — page still looks great; flowers keep floating
     });
 
-    // When song ends — stop fireworks, keep flowers/particles floating peacefully
+    // When song ends — trigger the full cinematic ending sequence
     EP.audio.addEventListener('ended', () => {
-        // Stop launching new fireworks
-        EP.running = false;
-        clearTimeout(EP.fwTimer);
-        // Flowers, particles, butterflies, stars keep looping forever via rafId
-        // Slow the flowers down gently for a calm final atmosphere
-        EP.flowers.forEach(f => { f.vy *= 0.55; f.vx *= 0.55; f.sa *= 0.55; });
-        EP.particles.forEach(p => { p.vy *= 0.6; p.vx *= 0.6; });
+        startCinematicEnding();
     });
 }
 
@@ -379,6 +373,160 @@ function sigSparkle() {
         }`;
     document.head.appendChild(style);
 })();
+
+/* ── Bootstrap ── */
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CINEMATIC ENDING SEQUENCE
+   Triggered when the song ends.
+   ══════════════════════════════════════════════════════════════ */
+function startCinematicEnding() {
+
+    // ── Step 1 (0s): Stop new fireworks, slow flowers & particles ──
+    EP.running = false;
+    clearTimeout(EP.fwTimer);
+    EP.flowers.forEach(f  => { f.vy *= 0.55; f.vx *= 0.55; f.sa *= 0.55; });
+    EP.particles.forEach(p => { p.vy *= 0.60; p.vx *= 0.60; });
+
+    // Hide the close button — no interaction from here
+    const closeBtn = document.getElementById('endingClose');
+    if (closeBtn) { closeBtn.style.transition = 'opacity 1s ease'; closeBtn.style.opacity = '0'; }
+
+    // ── Step 2 (1.5s): Darken the background slightly ──
+    setTimeout(() => {
+        const sky = document.getElementById('endingSky');
+        if (sky) {
+            sky.style.transition = 'opacity 2.5s ease';
+            sky.style.opacity = '0.35';
+        }
+        // Fade out remaining canvas content
+        EP.canvas.style.transition = 'opacity 2.5s ease';
+        EP.canvas.style.opacity = '0.35';
+    }, 1500);
+
+    // ── Step 3 (3.5s): Close the curtains ──
+    setTimeout(() => {
+        const L = document.getElementById('curtainLeft');
+        const R = document.getElementById('curtainRight');
+        if (L) L.classList.add('curtain-close');
+        if (R) R.classList.add('curtain-close');
+    }, 3500);
+
+    // ── Step 4 (7.5s): Curtains fully closed — fade everything behind to black ──
+    setTimeout(() => {
+        cancelAnimationFrame(EP.rafId);
+        EP.canvas.style.transition  = 'opacity 1s ease';
+        EP.canvas.style.opacity     = '0';
+        const sky = document.getElementById('endingSky');
+        const inner = document.getElementById('endingInner');
+        const aurora = document.getElementById('endingAurora');
+        const clouds = document.getElementById('endingClouds');
+        [sky, inner, aurora, clouds].forEach(el => {
+            if (el) { el.style.transition = 'opacity 1s ease'; el.style.opacity = '0'; }
+        });
+    }, 7500);
+
+    // ── Step 5 (8.5s): Credits screen fades in (black bg) ──
+    setTimeout(() => {
+        const screen = document.getElementById('creditsScreen');
+        if (screen) screen.classList.add('credits-bg-visible');
+
+        // Init credits canvas (tiny gold particles)
+        initCreditsCanvas();
+    }, 8500);
+
+    // ── Step 6 (9.5s): "Made with Gratitude." ──
+    setTimeout(() => {
+        showCreditBlock('creditBlock1');
+    }, 9500);
+
+    // ── Step 7 (12.5s): Hide block 1 ──
+    setTimeout(() => hideCreditBlock('creditBlock1'), 12500);
+
+    // ── Step 8 (14s): "Designed & Created by / Atharva Pawar" ──
+    setTimeout(() => showCreditBlock('creditBlock2'), 14000);
+
+    // ── Step 9 (18s): Hide block 2 ──
+    setTimeout(() => hideCreditBlock('creditBlock2'), 18000);
+
+    // ── Step 10 (19.5s): "BE Computer Engineering / Class of 2026" ──
+    setTimeout(() => showCreditBlock('creditBlock3'), 19500);
+
+    // ── Step 11 (24s): Final fade to black ──
+    setTimeout(() => {
+        hideCreditBlock('creditBlock3');
+        const cc = document.getElementById('creditsCanvas');
+        if (cc) { cc.style.transition = 'opacity 3s ease'; cc.style.opacity = '0'; }
+    }, 24000);
+
+    // ── Step 12 (27s): Total blackout ──
+    setTimeout(() => {
+        const screen = document.getElementById('creditsScreen');
+        if (screen) { screen.style.transition = 'opacity 2.5s ease'; screen.style.background = '#000'; }
+    }, 27000);
+}
+
+function showCreditBlock(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('credits-hide');
+    // Force reflow so transition fires
+    void el.offsetWidth;
+    el.classList.add('credits-show');
+}
+
+function hideCreditBlock(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('credits-show');
+    el.classList.add('credits-hide');
+}
+
+/* ── Tiny gold particle canvas for credits ── */
+let CC = { canvas: null, ctx: null, pts: [], rafId: null, W: 0, H: 0 };
+
+function initCreditsCanvas() {
+    CC.canvas = document.getElementById('creditsCanvas');
+    if (!CC.canvas) return;
+    CC.ctx = CC.canvas.getContext('2d');
+    CC.W   = CC.canvas.width  = window.innerWidth;
+    CC.H   = CC.canvas.height = window.innerHeight;
+
+    // Spawn sparse gold particles
+    CC.pts = Array.from({ length: 120 }, () => ({
+        x: Math.random() * CC.W, y: Math.random() * CC.H,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: -0.06 - Math.random() * 0.22,
+        r:  0.5 + Math.random() * 2.2,
+        ph: Math.random() * Math.PI * 2,
+        op: 0.15 + Math.random() * 0.35
+    }));
+
+    CC.canvas.classList.add('credits-visible');
+    CC.rafId = requestAnimationFrame(creditsLoop);
+}
+
+function creditsLoop(now) {
+    if (!CC.ctx) return;
+    CC.ctx.clearRect(0, 0, CC.W, CC.H);
+    const t = now / 1000;
+    CC.pts.forEach(p => {
+        p.x += p.vx + Math.sin(t * 0.3 + p.ph) * 0.15;
+        p.y += p.vy;
+        if (p.y < -4) { p.y = CC.H + 4; p.x = Math.random() * CC.W; }
+        const a = p.op * (0.5 + 0.5 * Math.sin(t * 0.8 + p.ph));
+        CC.ctx.beginPath();
+        CC.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        CC.ctx.fillStyle = `rgba(212,175,55,${a})`;
+        CC.ctx.fill();
+    });
+    CC.rafId = requestAnimationFrame(creditsLoop);
+}
 
 /* ── Bootstrap ── */
 if (document.readyState === 'loading') {
